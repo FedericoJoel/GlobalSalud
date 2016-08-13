@@ -1,0 +1,17 @@
+<ion-view title="Turnos Pendiente" hide-back-button="true" id="page6" class="background">
+
+    <ion-content padding="true" class="has-header">
+
+        <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudes| filter :'En Espera'">
+
+            <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="confirmar(solicitud.ID)">
+                <h2royal>{{solicitud.MEDICO}}
+                    <p>{{solicitud.FECHA}}</p>
+                    <i class="icon ion-clock"></i>
+                </h2royal>
+            </ion-item> 
+
+        </ion-list>
+        
+    </ion-content>
+</ion-view>

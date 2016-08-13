@@ -1,0 +1,19 @@
+<ion-view title="Detalle" id="page13" class=" ">
+    <ion-content padding="true" class="has-header">
+        <ion-list id="solicitarTurno-list7" class=" ">
+            <ion-item class="item-avatar  " id="solicitarTurno-list-item34">
+                <h2>{{solicitud.MEDICO}}</h2>
+                <p>{{solicitud.FECHA}}</p>
+            </ion-item>
+            <label class="item item-input item-stacked-label " id="solicitarTurno-input3">
+                <span class="input-label">Motivo</span>
+                <input type="text" placeholder="Completar en caso de cambio de horario">
+            </label>
+        </ion-list>
+        <div style="margin-right:-20px;">
+            <button id="solicitarTurno-button2" style="left:-10px;color:#FFFFFF;" class=" button button-assertive  button-full icon ion-android-checkbox-outline "> Solicitar cambio de fecha</button>
+            
+            <button id="solicitarTurno-button2" style="left:-10px;color:#FFFFFF;" class=" button button-balanced  button-full icon ion-android-checkbox-outline" ng-click="listar();"> Confirmar</button>
+        </div>
+    </ion-content>
+</ion-view>
