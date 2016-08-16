@@ -49,8 +49,8 @@ angular.module('app.controllers', [])
         })
     }
 
-    $scope.confirmar = function(){
-        $state.go('menu.confirmacionSolicitud');
+    $scope.confirmar = function(id){
+        $state.go('menu.confirmacionSolicitud',{id:id});
     }
 
     $scope.listar();
@@ -100,10 +100,11 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('confirmacionSolicitud', function($scope,$http,$state) {
+.controller('confirmacionSolicitud', function($scope,$http,$state,$stateParams) {
 
     $scope.listar = function(){
-        id = 1;
+        id = $stateParams.id;
+        console.log(id);
         $http.post("http://localhost:8888/mostrarsolicitud.php", {'id':id})
         
         .success(function(response) {
