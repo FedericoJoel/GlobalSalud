@@ -3,7 +3,6 @@ angular.module('app.controllers', [])
 .controller('loginCtrl', function($scope,UserSrv,$ionicPopup,$state,$http) {
 	$scope.data = {};
 
-
 	$scope.login = function(){
 
         if (!$scope.data.dni || !$scope.data.nafiliado) {
@@ -12,7 +11,7 @@ angular.module('app.controllers', [])
                 
             });
         }else{
-            $http.post("http://localhost:8888/login.php", {'dni':$scope.data.dni, 'nafiliado':$scope.data.nafiliado})
+            $http.post("http://hola-jaccinelli.c9users.io/GlobalSalud/Backend/login.php", {'dni':$scope.data.dni, 'nafiliado':$scope.data.nafiliado})
                 .success(function(response) {
                     if (response.validacion=="success") {
                         UserSrv.setDNI($scope.data.dni);
@@ -41,14 +40,19 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
-        $http.post("http://localhost:8888/listarsolicitudes.php", {'dni':dni })
+        $http.post("http://localhost:8888/listarsolicitudes.php", {'dni':dni, 'estado':'En Espera' })
+        
+        .success(function(response) {
+            $scope.solicitudes = response;
+            console.log($scope.solicitudes);
+        })
+        $http.post("http://localhost:8888/listarsolicitudes.php", {'dni':dni, 'estado':'' })
         
         .success(function(response) {
             $scope.solicitudes = response;
             console.log($scope.solicitudes);
         })
     }
-
     $scope.confirmar = function(){
         $state.go('menu.confirmacionSolicitud');
     }

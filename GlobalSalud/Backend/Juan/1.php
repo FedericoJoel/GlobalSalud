@@ -24,11 +24,15 @@
 
 	$data = json_decode(file_get_contents("php://input"));
 
-	//$estado = $db->real_escape_string($data->estado);
+	$estado = $db->real_escape_string($data->estado);
 	$dni = $db->real_escape_string($data->dni);
+    
+    $query = $db->query("SELECT * FROM Solicitudes INNER JOIN Turnos ON (Solicitudes.IDS = Turnos.IDSOLICITUD) WHERE Solicitudes.ESTADO='$estado' AND Solicitudes.DNISOLICITANTE = '$dni' AND Turnos.CONFIRMACION = 0") or die ("vacio");
+    
+
 
 //	$query = $db->query("SELECT * FROM Solicitudes WHERE DNISOLICITANTE='1' AND ESTADO='En Espera'") or die ("vacio");
-    $query = $db->query("SELECT * FROM Solicitudes INNER JOIN Turnos ON (Solicitudes.IDS = Turnos.IDSOLICITUD) WHERE Solicitudes.ESTADO='En Espera' AND Solicitudes.DNISOLICITANTE = '1' AND Turnos.CONFIRMACION = 0") or die ("vacio");
+   
 	while($row = $db->recorrer($query)) {
 	    $datos[] = $row;
 		
