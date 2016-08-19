@@ -21,7 +21,7 @@ angular.module('app.controllers', [])
                     }else{
                         var alertPopup = $ionicPopup.alert({
                             title: 'Error al ingresar',
-                            subTitle: 'Dni y/o numero de afiliado incorrecto.'
+                            subTitle: 'Dni y/o numero de afiliado es incorrecto.'
                         });
                     }
                 })
@@ -53,14 +53,9 @@ angular.module('app.controllers', [])
             console.log($scope.solicitudes);
         })
     }
-<<<<<<< HEAD
-    $scope.confirmar = function(){
-        $state.go('menu.confirmacionSolicitud');
-=======
 
     $scope.confirmar = function(id){
         $state.go('menu.confirmacionSolicitud',{id:id});
->>>>>>> f33a4d056937c350e6c9d0055effb09c1e77b126
     }
 
     $scope.listar();
