@@ -53,8 +53,14 @@ angular.module('app.controllers', [])
             console.log($scope.solicitudes);
         })
     }
+<<<<<<< HEAD
     $scope.confirmar = function(){
         $state.go('menu.confirmacionSolicitud');
+=======
+
+    $scope.confirmar = function(id){
+        $state.go('menu.confirmacionSolicitud',{id:id});
+>>>>>>> f33a4d056937c350e6c9d0055effb09c1e77b126
     }
 
     $scope.listar();
@@ -104,10 +110,11 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('confirmacionSolicitud', function($scope,$http,$state) {
+.controller('confirmacionSolicitud', function($scope,$http,$state,$stateParams) {
 
     $scope.listar = function(){
-        id = 1;
+        id = $stateParams.id;
+        console.log(id);
         $http.post("http://localhost:8888/mostrarsolicitud.php", {'id':id})
         
         .success(function(response) {
