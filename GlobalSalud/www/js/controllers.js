@@ -12,7 +12,7 @@ angular.module('app.controllers', [])
                 
             });
         }else{
-            $http.post("http://localhost:8888/login.php", {'dni':$scope.data.dni, 'nafiliado':$scope.data.nafiliado})
+            $http.post("http://hola-jaccinelli.c9users.io/GlobalSalud/Backend/login.php", {'dni':$scope.data.dni, 'nafiliado':$scope.data.nafiliado})
                 .success(function(response) {
                     if (response.validacion=="success") {
                         UserSrv.setDNI($scope.data.dni);
