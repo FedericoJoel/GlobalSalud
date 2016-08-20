@@ -83,7 +83,7 @@ angular.module('app.routes', [])
   })
 
   .state('menu.confirmacionSolicitud', {
-    url: '/confirmacionSolicitud/:id',
+    url: '/:id',
     views: {
       'side-menu21': {
         templateUrl: 'templates/confirmacionSolicitud.html',
