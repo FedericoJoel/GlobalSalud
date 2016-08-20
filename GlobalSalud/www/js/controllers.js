@@ -40,16 +40,22 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
-        $http.post("http://localhost:8888/listarsolicitudes.php", {'dni':dni, 'estado':'En Espera' })
+        $http.post("http://hola-jaccinelli.c9users.io/GlobalSalud/Backend/listarsolicitudes.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
         
         .success(function(response) {
-            $scope.solicitudes = response;
+            $scope.solicitudesEspera = response;
             console.log($scope.solicitudes);
         })
-        $http.post("http://localhost:8888/listarsolicitudes.php", {'dni':dni, 'estado':'' })
+        $http.post("http://hola-jaccinelli.c9users.io/GlobalSalud/Backend/listarsolicitudes.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Solicitud' })
         
         .success(function(response) {
-            $scope.solicitudes = response;
+            $scope.solicitudesPendiente = response;
+            console.log($scope.solicitudes);
+        })
+        $http.post("http://hola-jaccinelli.c9users.io/GlobalSalud/Backend/listarsolicitudes.php", {'dni':dni, 'estado':'Abierto', 'tipo':'Solicitud' })
+        
+        .success(function(response) {
+            $scope.solicitudesAbierto = response;
             console.log($scope.solicitudes);
         })
     }
@@ -66,7 +72,7 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
-        $http.post("http://localhost:8888/listarsolicitudes.php", {'dni':dni })
+        $http.post("http://localhost:8888/listarsolicitudes.php", {'dni':dni, 'estado':'Confirmado', 'confirmacion':2, 'tipo':'Turno' })
         
         .success(function(response) {
             $scope.solicitudes = response;
@@ -81,7 +87,7 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
-        $http.post("http://localhost:8888/listarsolicitudes.php", {'dni':dni })
+        $http.post("http://localhost:8888/listarsolicitudes.php", {'dni':dni, 'estado':'Rechazado', 'confirmacion':1, 'tipo':'Turno'  })
         
         .success(function(response) {
             $scope.solicitudes = response;

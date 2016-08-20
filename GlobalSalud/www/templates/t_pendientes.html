@@ -2,11 +2,37 @@
 
     <ion-content padding="true" class="has-header">
 
-        <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudes| filter :'En Espera'">
+        <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesEspera">
 
             <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="confirmar(solicitud.ID)">
                 <h2royal>{{solicitud.MEDICO}}
-                    <p>{{solicitud.FECHA}}</p>
+                    <p>{{solicitud.FECHAT}}</p>
+                    <p>{{solicitud.HORAT}}</p>
+                    <p>{{solicitud.MEDICOASIGNADO}}</p>
+                    <p>{{solicitud.NOMBRE}}</p>
+                    <p>{{solicitud.DIRECCION}}</p>
+                    <i class="icon ion-clock"></i>
+                </h2royal>
+            </ion-item> 
+
+        </ion-list>
+        <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesPendiente">
+
+            <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="rechazar(solicitud.ID)"> <!-- hay que hacer la funcion rechazar -->
+                <h2royal>{{solicitud.MEDICO}}
+                    <p>{{solicitud.FECHAS}}</p>
+                    <p>{{solicitud.NOMBRE}}</p> <!--aca hay que traer bien desde backend porque este dato no lo trae -->
+                    <i class="icon ion-clock"></i>
+                </h2royal>
+            </ion-item> 
+
+        </ion-list>
+        <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesAbierto">
+
+            <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="rechazar(solicitud.ID)">
+                <h2royal>{{solicitud.MEDICO}}
+                    <p>{{solicitud.FECHAS}}</p>
+                    <p>{{solicitud.NOMBRE}}</p> 
                     <i class="icon ion-clock"></i>
                 </h2royal>
             </ion-item> 

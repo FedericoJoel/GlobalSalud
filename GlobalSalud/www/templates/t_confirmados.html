@@ -4,10 +4,11 @@
         <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth " ng-repeat="solicitud in solicitudes | filter:'Confirmado'">
 
             <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11">
-                <h2 class="balanced">{{solicitud.MEDICO}}
-                    <p>Una Clinica</p>
-                    <p>Una direccion</p>
-                    <p>Un Dia y Horario</p>
+                <h2 class="balanced">{{solicitud.MEDICOASIGNADO}}
+                     <p>{{solicitud.FECHAT}}</p>
+                    <p>{{solicitud.HORAT}}</p>
+                    <p>{{solicitud.NOMBRE}}</p>
+                    <p>{{solicitud.DIRECCION}}</p>
                     <i class="icon ion-checkmark"></i>
                 </h2>
             </ion-item>

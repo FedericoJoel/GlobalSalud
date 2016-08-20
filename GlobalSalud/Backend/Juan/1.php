@@ -26,12 +26,22 @@
 
 	$estado = $db->real_escape_string($data->estado);
 	$dni = $db->real_escape_string($data->dni);
+    $confirmacion = $db->real_escape_string($data->confirmacion);
+    $tipo = $db->real_escape_string($data->tipo);
     
-    $query = $db->query("SELECT * FROM Solicitudes INNER JOIN Turnos ON (Solicitudes.IDS = Turnos.IDSOLICITUD) WHERE Solicitudes.ESTADO='$estado' AND Solicitudes.DNISOLICITANTE = '$dni' AND Turnos.CONFIRMACION = 0") or die ("vacio");
+    switch($tipo){
+        case 'Turno':
+             $query = $db->query("SELECT * FROM Solicitudes INNER JOIN Turnos ON Solicitudes.IDS = Turnos.IDSOLICITUD INNER JOIN Climed ON Solicitudes.IDCLIMED = Climed.IDCLI WHERE Solicitudes.ESTADO='$estado' AND Solicitudes.DNISOLICITANTE = '$dni' AND Turnos.CONFIRMACION = '$confirmacion' ") or die ("vacio");
+             break;
+        case 'Solicitud':
+            $query = $db->query("SELECT * FROM Solicitudes INNER JOIN Climed ON Solicitudes.IDCLIMED = Climed.IDCLI  WHERE ESTADO='$estado' AND DNISOLICITANTE = '$dni'") or die ("vacio");
+            break;
+        default:
+            echo 'no anda el switch del php 1';
+            break;
+    }
     
-
-
-//	$query = $db->query("SELECT * FROM Solicitudes WHERE DNISOLICITANTE='1' AND ESTADO='En Espera'") or die ("vacio");
+   
    
 	while($row = $db->recorrer($query)) {
 	    $datos[] = $row;
