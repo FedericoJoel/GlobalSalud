@@ -30,7 +30,7 @@ $data = json_decode(file_get_contents("php://input"));
 		$dni = $db->real_escape_string($data->dni);
 		$nafiliado = $db->real_escape_string($data->nafiliado);
 
-		$valores = $db->query("SELECT ID FROM Afiliados WHERE DNI = '$dni' AND NAFILIADO = '$nafiliado'");
+		$valores = $db->query("SELECT ID FROM Afiliados WHERE DNI = '$dni' AND NAFILIADO = '$nafiliado'") or die ("asdasd");
 
 		if($db->rows($valores) > 0 ) {
 	   		$id = $db->recorrer($valores);

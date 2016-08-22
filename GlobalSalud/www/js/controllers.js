@@ -11,7 +11,7 @@ angular.module('app.controllers', [])
                 
             });
         }else{
-            $http.post("http://hola-jaccinelli.c9users.io/GlobalSalud/Backend/login.php", {'dni':$scope.data.dni, 'nafiliado':$scope.data.nafiliado})
+            $http.post("http://181.164.27.58:8888/login.php", {'dni':$scope.data.dni, 'nafiliado':$scope.data.nafiliado})
                 .success(function(response) {
                     if (response.validacion=="success") {
                         UserSrv.setDNI($scope.data.dni);
@@ -19,6 +19,7 @@ angular.module('app.controllers', [])
                         UserSrv.setNsocio($scope.data.nsocio);
                         $state.go('menu.t_pendientes');
                     }else{
+                        console.log(response);
                         var alertPopup = $ionicPopup.alert({
                             title: 'Error al ingresar',
                             subTitle: 'Dni y/o numero de afiliado es incorrecto.'
@@ -40,19 +41,19 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
-        $http.post("http://hola-jaccinelli.c9users.io/GlobalSalud/Backend/listarsolicitudes.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
+        $http.post("http://181.164.27.58:8888/Juan/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
         
         .success(function(response) {
             $scope.solicitudesEspera = response;
-            console.log($scope.solicitudes);
+            console.log($scope.solicitudesEspera);
         })
-        $http.post("http://hola-jaccinelli.c9users.io/GlobalSalud/Backend/listarsolicitudes.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Solicitud' })
+        $http.post("http://181.164.27.58:8888/Juan/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Solicitud' })
         
         .success(function(response) {
             $scope.solicitudesPendiente = response;
             console.log($scope.solicitudes);
         })
-        $http.post("http://hola-jaccinelli.c9users.io/GlobalSalud/Backend/listarsolicitudes.php", {'dni':dni, 'estado':'Abierto', 'tipo':'Solicitud' })
+        $http.post("http://181.164.27.58:8888/Juan/1.php", {'dni':dni, 'estado':'Abierto', 'tipo':'Solicitud' })
         
         .success(function(response) {
             $scope.solicitudesAbierto = response;
@@ -72,7 +73,7 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
-        $http.post("http://localhost:8888/listarsolicitudes.php", {'dni':dni, 'estado':'Confirmado', 'confirmacion':2, 'tipo':'Turno' })
+        $http.post("http://181.164.27.58:8888/Juan/1.php", {'dni':dni, 'estado':'Confirmado', 'confirmacion':2, 'tipo':'Turno' })
         
         .success(function(response) {
             $scope.solicitudes = response;
@@ -87,7 +88,7 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
-        $http.post("http://localhost:8888/listarsolicitudes.php", {'dni':dni, 'estado':'Rechazado', 'confirmacion':1, 'tipo':'Turno'  })
+        $http.post("http://181.164.27.58:8888/Juan/1.php", {'dni':dni, 'estado':'Rechazado', 'confirmacion':1, 'tipo':'Turno'  })
         
         .success(function(response) {
             $scope.solicitudes = response;
