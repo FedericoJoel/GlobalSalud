@@ -28,10 +28,6 @@
 	$dni = $db->real_escape_string($data->dni);
     $confirmacion = $db->real_escape_string($data->confirmacion);
     $tipo = $db->real_escape_string($data->tipo);
-    
-    echo $dni;
-    echo $confirmacion;
-    echo $estado;
 
     switch($tipo){
         case 'Turno':
