@@ -7,13 +7,13 @@ angular.module('app.services', [])
 .service('UserSrv', function($q){
     var _dni;
     var _nsocio;
-
+    var _path = "http://www.gestionarturnos.com/backapp"
+    // var _path = "http://localhost:8888";
     this.setDNI = function(dni){
         _dni=dni;
     }
 
     this.getDNI = function(){
-        console.log(_dni);
         return _dni;
     }
 
@@ -23,6 +23,10 @@ angular.module('app.services', [])
 
     this.getNsocio = function(){
         return _nsocio;
+    }
+
+    this.getPath = function(){
+        return _path;
     }
 	// this.login = function(dni,nsocio){
 	// 	var deferred = $q.defer();

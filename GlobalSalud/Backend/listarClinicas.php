@@ -25,16 +25,17 @@
 	$data = json_decode(file_get_contents("php://input"));
 
 	//$estado = $db->real_escape_string($data->estado);
-	$id = $db->real_escape_string($data->id);
+	$especialidad = $db->real_escape_string($data->especialidad);
+	$localidad = $db->real_escape_string($data->localidad);
 
-	$query = $db->query("SELECT * FROM Solicitudes WHERE IDS = '$id'") or die ("FALLO MOSTRAR SOLICITUD EN ESPERA");
-
-	$row = $db->recorrer($query);
+//	$query = $db->query("SELECT * FROM Solicitudes WHERE DNISOLICITANTE='1' AND ESTADO='En Espera'") or die ("vacio");
+    $query = $db->query("SELECT Climed.IDCLI,Climed.NOMBRE,Climed.DIRECCION,Climed.LOCALIDAD, joined.NOMBRE AS ESPECIALIDAD FROM Climed INNER JOIN (SELECT * FROM ClimedEsp INNER JOIN Especialidad ON (ClimedEsp.IDESP = Especialidad.IDESPECIALIDAD)) AS joined ON (Climed.IDCLI = joined.IDCLIMED) WHERE joined.NOMBRE = '$especialidad' AND climed.LOCALIDAD = '$localidad'  ORDER BY Climed.NOMBRE ASC") or die ("error en busqueda clinicas");
 	
-	//$datos[] = $row;
+	while($row = $db->recorrer($query)) {
+	    $datos[] = $row;
 		
-
-	print json_encode($row);
+	}
+	
+	print json_encode($datos);
 
 ?>
-

@@ -25,16 +25,15 @@
 	$data = json_decode(file_get_contents("php://input"));
 
 	//$estado = $db->real_escape_string($data->estado);
-	$id = $db->real_escape_string($data->id);
+	$dni = $db->real_escape_string($data->dni);
+    $clinica = $db->real_escape_string($data->clinica);
+    $nafiliado = $db->real_escape_string($data->nafiliado);
+    $sugerido = $db->real_escape_string($data->sugerido);
+    $especialidad = $db->real_escape_string($data->especialidad);
 
-	$query = $db->query("SELECT * FROM Solicitudes WHERE IDS = '$id'") or die ("FALLO MOSTRAR SOLICITUD EN ESPERA");
+    date_default_timezone_set('America/Argentina/Buenos_Aires');
+    $fecha = date("Y-m-d");
 
-	$row = $db->recorrer($query);
+	$query = $db->query("INSERT INTO Solicitudes (DNISOLICITANTE,MEDICO,FECHAS,ESTADO,IDAFILIADO,IDCLIMED,ESPECIALIDAD) VALUES ('$dni','$sugerido','$fecha','Pendiente','$nafiliado','$clinica','$especialidad')");
 	
-	//$datos[] = $row;
-		
-
-	print json_encode($row);
-
 ?>
-

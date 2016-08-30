@@ -4,6 +4,7 @@ angular.module('app.controllers', [])
 	$scope.data = {};
 
 	$scope.login = function(){
+        //ruta = UserSrv.getPath();
 
         if (!$scope.data.dni || !$scope.data.nafiliado) {
             var alertPopup = $ionicPopup.alert({
@@ -11,12 +12,12 @@ angular.module('app.controllers', [])
                 
             });
         }else{
-            $http.post("http://localhost:8888/login.php", {'dni':$scope.data.dni, 'nafiliado':$scope.data.nafiliado})
+            $http.post( UserSrv.getPath() + "/login.php", {'dni':$scope.data.dni, 'nafiliado':$scope.data.nafiliado})
                 .success(function(response) {
                     if (response.validacion=="success") {
                         UserSrv.setDNI($scope.data.dni);
                         var dni = UserSrv.getDNI();
-                        UserSrv.setNsocio($scope.data.nsocio);
+                        UserSrv.setNsocio($scope.data.nafiliado);
                         $state.go('menu.t_pendientes');
                     }else{
                         console.log(response);
@@ -42,19 +43,25 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
 
-        $http.post("http://localhost:8888/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
+
+        // EN ESPERA
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
         
         .success(function(response) {
             $scope.solicitudesEspera = response;
             console.log(response);
         })
-        $http.post("http://localhost:8888/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Solicitud' })
+
+        // PENDIENTES
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })
         
         .success(function(response) {
             $scope.solicitudesPendiente = response;
             console.log(response);
         })
-        $http.post("http://localhost:8888/1.php", {'dni':dni, 'estado':'Abierto', 'tipo':'Solicitud' })
+
+        // ABIERTOS
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Abierto', 'tipo':'Pendiente' })
         
         .success(function(response) {
             $scope.solicitudesAbierto = response;
@@ -74,7 +81,7 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
-        $http.post("http://localhost:8888/1.php", {'dni':dni, 'estado':'Confirmado', 'confirmacion':2, 'tipo':'Turno' })
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Confirmado', 'confirmacion':2, 'tipo':'Turno' })
         
         .success(function(response) {
             $scope.solicitudes = response;
@@ -89,7 +96,7 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
-        $http.post("http://localhost:8888/1.php", {'dni':dni, 'estado':'Rechazado', 'confirmacion':1, 'tipo':'Turno'  })
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Rechazado', 'confirmacion':1, 'tipo':'Turno'  })
         
         .success(function(response) {
             $scope.solicitudes = response;
@@ -101,31 +108,129 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('busquedaPorPartidoCtrl', function($scope) {
+.controller('busquedaPorPartidoCtrl', function($scope,$http,$state,$stateParams,UserSrv) {
+
+    $scope.esp = $stateParams.especialidad;
+
+    $scope.listarLocalidades = function(){
+
+        $http.post( UserSrv.getPath() + "/listarLocalidades.php", {'especialidad':$scope.esp})
+        
+        .success(function(response) {
+            $scope.localidades = response;
+        })
+    }
+
+    $scope.listarLocalidades();
+
+    $scope.elegirLocalidad = function(localidad){
+
+        $state.go('menu.listaDeClinicas',{localidad:localidad, especialidad:$scope.esp});
+        
+    }
 
 })
    
 .controller('clinicasYParticularesCtrl', function($scope) {
 
 })
-   
-.controller('solicitarTurnoCtrl', function($scope) {
 
-})
-
-.controller('confirmacionSolicitud', function($scope,$http,$state,$stateParams) {
+.controller('listaDeClinicasCtrl', function($scope,$http,$state,$stateParams,UserSrv) {
 
     $scope.listar = function(){
-        id = $stateParams.id;
-        console.log(id);
-        $http.post("http://localhost:8888/mostrarsolicitud.php", {'id':id})
+        localidad = $stateParams.localidad;
+        especialidad = $stateParams.especialidad;
+
+        $http.post( UserSrv.getPath() + "/listarClinicas.php", {'localidad':localidad,'especialidad':especialidad})
         
         .success(function(response) {
-            $scope.solicitud = response;
+            $scope.clinicas = response;
             console.log(response);
         })
     }
 
     $scope.listar();
+
+    console.log($scope.clinicas);
+
+    $scope.elegirClinica = function(clinica){
+
+        $state.go('menu.solicitarTurno',{clinica:clinica});
+
+    }
+
+})
+   
+.controller('solicitarTurnoCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
+
+    $scope.listar = function(){
+        clinica = $stateParams.clinica;
+        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
+        
+        .success(function(response) {
+            $scope.clinica = response;
+        })
+    }
+
+
+    $scope.listar();
+
+
+    $scope.enviar = function(){
+
+        clinica = $stateParams.clinica;
+        dni = UserSrv.getDNI();
+        carnet = UserSrv.getNsocio();
+        sugerido = $scope.sugerido;
+
+        $http.post( UserSrv.getPath() + "/altaSolicitud.php", {'clinica':clinica,'dni':dni,'nafiliado':carnet,'sugerido':sugerido,'especialidad':1})
+        
+        .success(function() {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Su solicitud se ha enviado',
+            });
+
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+            $state.go('menu.t_pendientes');
+
+
+        })
+    }
+
+})
+
+.controller('confirmacionSolicitud', function($scope,$http,$state,$stateParams,UserSrv) {
+
+    $scope.listar = function(){
+        id = $stateParams.id;
+        $http.post( UserSrv.getPath() + "/mostrarsolicitud.php", {'id':id})
+        
+        .success(function(response) {
+            $scope.solicitud = response;
+        })
+    }
+
+    $scope.listar();
+
+    $scope.confirmar = function(){
+        id = $stateParams.id;
+        $http.post( UserSrv.getPath() + "/confirmacionSolicitud.php", {'idsolicitud':id, 'accion':'confirmar','motivo':$scope.motivo})
+        
+        .success(function(response) {
+            $scope.solicitud = response;
+        })
+    }
+
+    $scope.rechazar = function(){
+        id = $stateParams.id;
+        $http.post( UserSrv.getPath() + "/confirmacionSolicitud.php", {'idsolicitud':id, 'accion':'rechazar','motivo':$scope.motivo})
+        
+        .success(function(response) {
+            $scope.solicitud = response;
+        })
+    }
+
 })
  

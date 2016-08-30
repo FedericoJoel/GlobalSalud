@@ -7,13 +7,13 @@
             </ion-item>
             <label class="item item-input item-stacked-label " id="solicitarTurno-input3">
                 <span class="input-label">Motivo</span>
-                <input type="text" placeholder="Completar en caso de cambio de horario">
+                <input type="text" placeholder="Completar en caso de cambio" ng-model="$parent.motivo">
             </label>
         </ion-list>
         <div style="margin-right:-20px;">
-            <button id="solicitarTurno-button2" style="left:-10px;color:#FFFFFF;" class=" button button-assertive  button-full icon ion-android-checkbox-outline "> Solicitar cambio de fecha</button>
+            <button id="solicitarTurno-button2" style="left:-10px;color:#FFFFFF;" class=" button button-assertive  button-full icon ion-android-checkbox-outline " ng-click="rechazar();"> Solicitar cambio</button>
             
-            <button id="solicitarTurno-button2" style="left:-10px;color:#FFFFFF;" class=" button button-balanced  button-full icon ion-android-checkbox-outline" ng-click="listar();"> Confirmar</button>
+            <button id="solicitarTurno-button2" style="left:-10px;color:#FFFFFF;" class=" button button-balanced  button-full icon ion-android-checkbox-outline" ng-click="confirmar();"> Confirmar</button>
         </div>
     </ion-content>
 </ion-view>

@@ -24,16 +24,12 @@
 
 	$data = json_decode(file_get_contents("php://input"));
 
-	//$estado = $db->real_escape_string($data->estado);
-	$id = $db->real_escape_string($data->id);
+	$clinica = $db->real_escape_string($data->clinica);
 
-	$query = $db->query("SELECT * FROM Solicitudes WHERE IDS = '$id'") or die ("FALLO MOSTRAR SOLICITUD EN ESPERA");
+	$query = $db->query("SELECT * FROM Climed WHERE IDCLI = '$clinica'") or die ("Fallo Mostrar Clinica");
 
 	$row = $db->recorrer($query);
 	
-	//$datos[] = $row;
-		
-
 	print json_encode($row);
 
 ?>

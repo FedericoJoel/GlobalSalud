@@ -53,7 +53,7 @@ angular.module('app.routes', [])
   })
 
   .state('menu.busquedaPorPartido', {
-    url: '/buscarpartido',
+    url: '/buscarpartido:especialidad',
     views: {
       'side-menu21': {
         templateUrl: 'templates/busquedaPorPartido.html',
@@ -73,7 +73,7 @@ angular.module('app.routes', [])
   })
 
   .state('menu.solicitarTurno', {
-    url: '/solicitarTurno',
+    url: '/solicitarTurno/:clinica',
     views: {
       'side-menu21': {
         templateUrl: 'templates/solicitarTurno.html',
@@ -88,6 +88,16 @@ angular.module('app.routes', [])
       'side-menu21': {
         templateUrl: 'templates/confirmacionSolicitud.html',
         controller: 'confirmacionSolicitud'
+      }
+    }
+  })
+
+  .state('menu.listaDeClinicas', {
+    url: '/listaDeClinicas/:localidad/:especialidad',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/listaDeClinicas.html',
+        controller: 'listaDeClinicasCtrl'
       }
     }
   })

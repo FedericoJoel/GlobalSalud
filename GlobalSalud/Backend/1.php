@@ -30,11 +30,11 @@
     $tipo = $db->real_escape_string($data->tipo);
 
     switch($tipo){
-        case 'Turno':
-             $query = $db->query("SELECT * FROM Solicitudes INNER JOIN Turnos ON Solicitudes.IDS = Turnos.IDSOLICITUD INNER JOIN Climed ON Solicitudes.IDCLIMED = Climed.IDCLI WHERE Solicitudes.ESTADO='$estado' AND Solicitudes.DNISOLICITANTE = '$dni' AND Turnos.CONFIRMACION = '$confirmacion' ") or die ("vacio");
+        case 'Turno': //En Espera
+             $query = $db->query("SELECT Solicitudes.IDS, Solicitudes.MEDICO, Climed.NOMBRE AS CLINICA, Climed.DIRECCION, Especialidad.NOMBRE AS ESP, Turnos.MEDICOASIGNADO, Turnos.FECHAT, Turnos.HORAT,Turnos.MOTIVOT FROM Solicitudes INNER JOIN Turnos ON Solicitudes.IDS = Turnos.IDSOLICITUD INNER JOIN Climed ON Solicitudes.IDCLIMED = Climed.IDCLI INNER JOIN Especialidad ON Solicitudes.ESPECIALIDAD = Especialidad.IDESPECIALIDAD WHERE Solicitudes.ESTADO='$estado' AND Solicitudes.DNISOLICITANTE = '$dni' AND Turnos.CONFIRMACION = '$confirmacion' ") or die ("vacio");
              break;
-        case 'Solicitud':
-            $query = $db->query("SELECT * FROM Solicitudes INNER JOIN Climed ON Solicitudes.IDCLIMED = Climed.IDCLI  WHERE ESTADO='$estado' AND DNISOLICITANTE = '$dni'") or die ("vacio");
+        case 'Pendiente': //Pendientes
+            $query = $db->query("SELECT Solicitudes.IDS, Solicitudes.MEDICO,Solicitudes.FECHAS,Climed.NOMBRE AS CLINICA,Climed.DIRECCION,Especialidad.NOMBRE AS ESP FROM Solicitudes INNER JOIN Climed ON Solicitudes.IDCLIMED = Climed.IDCLI INNER JOIN Especialidad ON Solicitudes.ESPECIALIDAD = Especialidad.IDESPECIALIDAD WHERE Solicitudes.ESTADO='$estado' AND Solicitudes.DNISOLICITANTE = '$dni'") or die ("FALLO CONSULTA PENDIENTE");
             break;
         default:
             echo 'no anda el switch del php 1';
