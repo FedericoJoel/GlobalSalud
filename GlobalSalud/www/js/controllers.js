@@ -12,26 +12,23 @@ angular.module('app.controllers', [])
                 
             });
         }else{
+
+            UserSrv.showLoading();
+
             $http.post( UserSrv.getPath() + "/login.php", {'dni':$scope.data.dni, 'nafiliado':$scope.data.nafiliado})
                 .success(function(response) {
                     if (response.validacion=="success") {
                         UserSrv.setDNI($scope.data.dni);
                         var dni = UserSrv.getDNI();
                         UserSrv.setNsocio($scope.data.nafiliado);
+                        UserSrv.hideLoading();
                         $state.go('menu.t_pendientes');
                     }else{
-                        console.log(response);
-                        var alertPopup = $ionicPopup.alert({
-                            title: 'Error al ingresar',
-                            subTitle: 'Dni y/o numero de afiliado es incorrecto.'
-                        });
+                        UserSrv.hideLoadingerror("Combinacion de usuario y contraseña incorrectos");
                     }
                 })
                 .error(function(data) {
-                   var alertPopup = $ionicPopup.alert({
-                       title: 'Error al ingresar',
-                       template: 'Compruebe su conexion'
-                   });
+                    UserSrv.hideLoadingerror("Error de conexion");
                 });
         }
 	}
@@ -45,12 +42,51 @@ angular.module('app.controllers', [])
 
 
         // EN ESPERA
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
+        
+        .success(function(response) {
+            $scope.solicitudesEspera = response;
+            console.log(response);
+            UserSrv.hideLoading();
+        })
+
+
+        // PENDIENTES
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })
+        
+        .success(function(response) {
+            $scope.solicitudesPendiente = response;
+            console.log(response);
+            UserSrv.hideLoading();
+        })
+
+        // ABIERTOS
+
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Abierto', 'tipo':'Pendiente' })
+        
+        .success(function(response) {
+
+            $scope.solicitudesAbierto = response;
+            console.log(response);
+            UserSrv.hideLoading();
+        })
+    }
+
+    $scope.refresh = function(){
+        var dni = UserSrv.getDNI();
+
+
+        // EN ESPERA
         $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
         
         .success(function(response) {
             $scope.solicitudesEspera = response;
             console.log(response);
         })
+
 
         // PENDIENTES
         $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })
@@ -61,9 +97,11 @@ angular.module('app.controllers', [])
         })
 
         // ABIERTOS
+
         $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Abierto', 'tipo':'Pendiente' })
         
         .success(function(response) {
+
             $scope.solicitudesAbierto = response;
             console.log(response);
         })
@@ -73,6 +111,14 @@ angular.module('app.controllers', [])
         $state.go('menu.confirmacionSolicitud',{id:id});
     }
 
+    $scope.doRefresh = function() {
+    
+        console.log('Refreshing!');
+
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
+
     $scope.listar();
 
 })
@@ -80,6 +126,18 @@ angular.module('app.controllers', [])
 .controller('t_confirmadosCtrl', function($scope,UserSrv,$state,$http) {
 
     $scope.listar = function(){
+        var dni = UserSrv.getDNI();
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Confirmado', 'confirmacion':2, 'tipo':'Turno' })
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.solicitudes = response;
+            console.log($scope.solicitudes);
+        })
+    }
+
+    $scope.refresh = function(){
         var dni = UserSrv.getDNI();
         $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Confirmado', 'confirmacion':2, 'tipo':'Turno' })
         
@@ -89,12 +147,32 @@ angular.module('app.controllers', [])
         })
     }
 
+    $scope.doRefresh = function() {
+    
+        console.log('Refreshing!');
+
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
+
     $scope.listar();
 })
 
 .controller('t_rechazadosCtrl', function($scope,UserSrv,$state,$http) {
 
     $scope.listar = function(){
+        var dni = UserSrv.getDNI();
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Rechazado', 'confirmacion':1, 'tipo':'Turno'  })
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.solicitudes = response;
+            console.log($scope.solicitudes);
+        })
+    }
+
+    $scope.refresh = function(){
         var dni = UserSrv.getDNI();
         $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Rechazado', 'confirmacion':1, 'tipo':'Turno'  })
         
@@ -103,6 +181,14 @@ angular.module('app.controllers', [])
             console.log($scope.solicitudes);
         })
     }
+
+    $scope.doRefresh = function() {
+    
+        console.log('Refreshing!');
+
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
 
     $scope.listar();
 
@@ -113,7 +199,16 @@ angular.module('app.controllers', [])
     $scope.esp = $stateParams.especialidad;
 
     $scope.listarLocalidades = function(){
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/listarLocalidades.php", {'especialidad':$scope.esp})
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.localidades = response;
+        })
+    }
 
+    $scope.refresh = function(){
         $http.post( UserSrv.getPath() + "/listarLocalidades.php", {'especialidad':$scope.esp})
         
         .success(function(response) {
@@ -122,6 +217,15 @@ angular.module('app.controllers', [])
     }
 
     $scope.listarLocalidades();
+
+    $scope.doRefresh = function() {
+    
+        console.log('Refreshing!');
+
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
+
 
     $scope.elegirLocalidad = function(localidad){
 
@@ -138,6 +242,19 @@ angular.module('app.controllers', [])
 .controller('listaDeClinicasCtrl', function($scope,$http,$state,$stateParams,UserSrv) {
 
     $scope.listar = function(){
+        localidad = $stateParams.localidad;
+        especialidad = $stateParams.especialidad;
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/listarClinicas.php", {'localidad':localidad,'especialidad':especialidad})
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.clinicas = response;
+            console.log(response);
+        })
+    }
+
+    $scope.refresh = function(){
         localidad = $stateParams.localidad;
         especialidad = $stateParams.especialidad;
 
@@ -159,15 +276,26 @@ angular.module('app.controllers', [])
 
     }
 
+    $scope.doRefresh = function() {
+    
+        console.log('Refreshing!');
+
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
+
+
 })
    
 .controller('solicitarTurnoCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
 
     $scope.listar = function(){
         clinica = $stateParams.clinica;
+        UserSrv.showLoading();
         $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
         
         .success(function(response) {
+            UserSrv.hideLoading();
             $scope.clinica = response;
         })
     }
@@ -183,12 +311,11 @@ angular.module('app.controllers', [])
         carnet = UserSrv.getNsocio();
         sugerido = $scope.sugerido;
 
+        UserSrv.showLoading();
         $http.post( UserSrv.getPath() + "/altaSolicitud.php", {'clinica':clinica,'dni':dni,'nafiliado':carnet,'sugerido':sugerido,'especialidad':1})
         
         .success(function() {
-            var alertPopup = $ionicPopup.alert({
-                title: 'Su solicitud se ha enviado',
-            });
+            UserSrv.hideLoadingerror("Su solicitud se ha enviado con exito");
 
             $ionicHistory.nextViewOptions({
                 disableBack: true
@@ -205,6 +332,19 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         id = $stateParams.id;
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/mostrarsolicitud.php", {'id':id})
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.solicitud = response;
+        })
+    }
+
+    $scope.listar();
+
+    $scope.refresh = function(){
+        id = $stateParams.id;
         $http.post( UserSrv.getPath() + "/mostrarsolicitud.php", {'id':id})
         
         .success(function(response) {
@@ -212,22 +352,32 @@ angular.module('app.controllers', [])
         })
     }
 
-    $scope.listar();
+    $scope.doRefresh = function() {
+    
+        console.log('Refreshing!');
+
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
 
     $scope.confirmar = function(){
         id = $stateParams.id;
+        UserSrv.showLoading();
         $http.post( UserSrv.getPath() + "/confirmacionSolicitud.php", {'idsolicitud':id, 'accion':'confirmar','motivo':$scope.motivo})
         
         .success(function(response) {
+            UserSrv.hideLoading();
             $scope.solicitud = response;
         })
     }
 
     $scope.rechazar = function(){
         id = $stateParams.id;
+        UserSrv.showLoading();
         $http.post( UserSrv.getPath() + "/confirmacionSolicitud.php", {'idsolicitud':id, 'accion':'rechazar','motivo':$scope.motivo})
         
         .success(function(response) {
+            UserSrv.hideLoading();
             $scope.solicitud = response;
         })
     }

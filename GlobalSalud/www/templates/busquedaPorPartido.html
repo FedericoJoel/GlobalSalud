@@ -1,6 +1,11 @@
 <ion-view title="Busqueda por partido" hide-back-button="true" id="page7" class=" ">
     <ion-content padding="true" class=" manual-remove-top-padding has-header">
 
+                <!-- PULL TO REFRESH -->
+        <ion-refresher on-refresh="doRefresh()">
+                     
+        </ion-refresher>
+
         <ion-list id="busquedaPorPartido-list4" class=" manual-list-fullwidth " >
        
             <!-- BUSCADOR -->

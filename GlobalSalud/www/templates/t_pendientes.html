@@ -1,9 +1,14 @@
 <ion-view title="Turnos Pendiente" hide-back-button="true" id="page6" class="background">
 
     <ion-content padding="true" class="has-header">
+        
 
-
+        <!-- PULL TO REFRESH -->
+        <ion-refresher on-refresh="doRefresh()">
+                     
+        </ion-refresher>
         <!-- LISTA EN ESPERA -->
+        <!-- ME TOCA A MI -->
         <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesEspera">
 
             <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="confirmar(solicitud.IDS)">
@@ -21,9 +26,10 @@
 
 
         <!-- LISTA PENDIENTES -->
-        <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesPendiente">
+        <!-- LE TOCA AL OPERADOR -->
+        <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesPendiente" >
 
-            <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="rechazar(solicitud.ID)"> <!-- hay que hacer la funcion rechazar -->
+            <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="rechazar(solicitud.ID)" style="background-color:#F0F0F0;"> <!-- hay que hacer la funcion rechazar -->
                 <h2royal>{{solicitud.CLINICA}}
                     <p>Dir: {{solicitud.DIRECCION}}</p>
                     <p>Tipo: {{solicitud.ESP}}</p>
@@ -39,7 +45,7 @@
         <!-- LISTA ABIERTO -->
         <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesAbierto">
 
-            <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="rechazar(solicitud.ID)">
+            <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="rechazar(solicitud.ID)" style="background-color:#F0F0F0;">
                 <h2royal>{{solicitud.MEDICO}}
                     <p>{{solicitud.FECHAS | date:'dd/MM/yyyy'}}</p>
                     <p>{{solicitud.NOMBRE}}</p> 

@@ -4,7 +4,7 @@ angular.module('app.services', [])
 
 }])
 
-.service('UserSrv', function($q){
+.service('UserSrv', function($q, $ionicLoading, $ionicPopup){
     var _dni;
     var _nsocio;
     var _path = "http://www.gestionarturnos.com/backapp"
@@ -27,6 +27,27 @@ angular.module('app.services', [])
 
     this.getPath = function(){
         return _path;
+    }
+
+    this.showLoading = function(){
+        $ionicLoading.show({
+            template: '<div class="icon ion-loading-a"></div> Loading... ',
+            animation: 'fade-in',
+            showBackdrop: true,
+            maxWidth: 500,
+            showDelay: 100
+        });
+    }
+
+    this.hideLoadingerror = function(msj){
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+            title: msj,
+        });
+    }
+
+    this.hideLoading = function(){
+        $ionicLoading.hide();
     }
 	// this.login = function(dni,nsocio){
 	// 	var deferred = $q.defer();
