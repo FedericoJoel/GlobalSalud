@@ -29,8 +29,9 @@
 	$localidad = $db->real_escape_string($data->localidad);
 
 //	$query = $db->query("SELECT * FROM Solicitudes WHERE DNISOLICITANTE='1' AND ESTADO='En Espera'") or die ("vacio");
-    $query = $db->query("SELECT Climed.IDCLI,Climed.NOMBRE,Climed.DIRECCION,Climed.LOCALIDAD, joined.NOMBRE AS ESPECIALIDAD FROM Climed INNER JOIN (SELECT * FROM ClimedEsp INNER JOIN Especialidad ON (ClimedEsp.IDESP = Especialidad.IDESPECIALIDAD)) AS joined ON (Climed.IDCLI = joined.IDCLIMED) WHERE joined.NOMBRE = '$especialidad' AND climed.LOCALIDAD = '$localidad'  ORDER BY Climed.NOMBRE ASC") or die ("error en busqueda clinicas");
-	
+    $query = $db->query("SELECT Climed.IDCLI,Climed.NOMBRE,Climed.DIRECCION,Climed.LOCALIDAD, joined.NOMBRE AS ESPECIALIDAD FROM Climed INNER JOIN (SELECT * FROM ClimedEsp INNER JOIN Especialidad ON (ClimedEsp.IDESP = Especialidad.IDESPECIALIDAD)) AS joined ON (Climed.IDCLI = joined.IDCLIMED) WHERE joined.NOMBRE = '$especialidad' AND Climed.LOCALIDAD = '$localidad'  ORDER BY Climed.NOMBRE ASC") or die ("error en busqueda clinicas");
+
+
 	while($row = $db->recorrer($query)) {
 	    $datos[] = $row;
 		
