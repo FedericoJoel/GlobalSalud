@@ -6,13 +6,14 @@
                      
         </ion-refresher>
 
-        <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth " ng-repeat="solicitud in solicitudes">
+        <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth " ng-repeat="solicitud in solicitudes"> 
 
             <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11">
+                <img src="img/clinica.jpg">
                 <h2 class="balanced">{{solicitud.CLINICA}}
                     <p>Dir: {{solicitud.DIRECCION}}</p>
                     <p>Tipo: {{solicitud.ESP}}</p>
-                    <p>Medico: {{solicitud.MEDICOASIGNADO}}</p>
+                    <p>Medico: {{solicitud.MEDICOASIGNADO}}</p> 
                     <p>Fecha: {{solicitud.FECHAT}}</p>
                     <p>Hora: {{solicitud.HORAT}}</p>
                     <i class="icon ion-checkmark"></i>

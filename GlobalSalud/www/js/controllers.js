@@ -163,7 +163,7 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Rechazado', 'confirmacion':1, 'tipo':'Turno'  })
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Rechazado', 'tipo':'Pendiente'  })
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -174,7 +174,7 @@ angular.module('app.controllers', [])
 
     $scope.refresh = function(){
         var dni = UserSrv.getDNI();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Rechazado', 'confirmacion':1, 'tipo':'Turno'  })
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Rechazado', 'tipo':'Pendiente'  })
         
         .success(function(response) {
             $scope.solicitudes = response;
@@ -365,9 +365,14 @@ angular.module('app.controllers', [])
         UserSrv.showLoading();
         $http.post( UserSrv.getPath() + "/confirmacionSolicitud.php", {'idsolicitud':id, 'accion':'confirmar','motivo':$scope.motivo})
         
-        .success(function(response) {
-            UserSrv.hideLoading();
-            $scope.solicitud = response;
+        .success(function() {
+            UserSrv.hideLoadingerror("Su solicitud se ha enviado con exito");
+
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+            $state.go('menu.t_pendientes');
+
         })
     }
 

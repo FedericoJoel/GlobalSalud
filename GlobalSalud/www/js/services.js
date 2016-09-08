@@ -7,8 +7,8 @@ angular.module('app.services', [])
 .service('UserSrv', function($q, $ionicLoading, $ionicPopup){
     var _dni;
     var _nsocio;
-    var _path = "http://www.gestionarturnos.com/backapp"
-    // var _path = "http://localhost:8888";
+    // var _path = "http://www.gestionarturnos.com/backapp"
+    var _path = "http://localhost:8888";
     this.setDNI = function(dni){
         _dni=dni;
     }

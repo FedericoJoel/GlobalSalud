@@ -34,7 +34,7 @@
             
             break;
         case 'rechazar': //RECHAZA SOLICITUD
-            $query = $db->query("UPDATE solicitudes SET ESTADO = 'Pendiente' WHERE IDS='$idsolicitud'") or die("no anda el update de rechazar 1");
+            $query = $db->query("UPDATE Solicitudes SET ESTADO = 'Pendiente' WHERE IDS='$idsolicitud'") or die("no anda el update de rechazar 1");
             $query2 = $db->query("UPDATE Turnos SET CONFIRMACION='1', MOTIVOT='$motivo' WHERE IDSOLICITUD='$idsolicitud' AND CONFIRMACION='0'") or die("no anda el update de rechazar 2");
             break;
         default:

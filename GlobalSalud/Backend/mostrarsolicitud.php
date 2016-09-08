@@ -27,7 +27,7 @@
 	//$estado = $db->real_escape_string($data->estado);
 	$id = $db->real_escape_string($data->id);
 
-	$query = $db->query("SELECT * FROM Solicitudes WHERE IDS = '$id'") or die ("FALLO MOSTRAR SOLICITUD EN ESPERA");
+	$query = $db->query("SELECT Solicitudes.IDS,Solicitudes.DNISOLICITANTE, Solicitudes.MEDICO,Solicitudes.FECHAS,Climed.NOMBRE AS CLINICA,Climed.DIRECCION,Turnos.MEDICOASIGNADO,Turnos.FECHAT,Turnos.HORAT FROM Solicitudes INNER JOIN Climed ON Solicitudes.IDCLIMED = Climed.IDCLI INNER JOIN Turnos ON Solicitudes.IDS = Turnos.IDSOLICITUD WHERE Solicitudes.IDS = '$id'") or die ("FALLO CARGAR SOLICITUD");
 
 	$row = $db->recorrer($query);
 	
