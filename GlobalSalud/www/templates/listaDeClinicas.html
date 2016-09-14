@@ -1,4 +1,4 @@
-<ion-view title="Clinicas y Particulares" id="page7" class=" ">
+<ion-view title="<b>Clinicas y Particulares</b>" id="page7" class=" ">
     <ion-content padding="true" class=" manual-remove-top-padding has-header">
 
                 <!-- PULL TO REFRESH -->
@@ -16,7 +16,7 @@
 
             <!-- LISTA -->
             <ion-item class="item-avatar item-icon-right royal" ng-click="elegirClinica(clinica.IDCLI)" ng-repeat="clinica in filtered = (clinicas |filter:{NOMBRE:buscador})">
-                <h2royal>{{clinica.NOMBRE}}</h2royal>
+                <h2royal><b>{{clinica.NOMBRE}}</b></h2royal>
                 <p>{{clinica.DIRECCION}}</p>
                 <p>{{clinica.LOCALIDAD}}</p>
                 <i class="icon ion-android-arrow-dropright"></i>
