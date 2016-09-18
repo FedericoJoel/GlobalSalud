@@ -102,6 +102,36 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('menu.climed', {
+    url: '/climed',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/climed.html',
+        controller: 'climedCtrl'
+      }
+    }
+  })
+
+  .state('menu.farmacias', {
+    url: '/farmacias',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/farmacias.html',
+        controller: 'farmaciasCtrl'
+      }
+    }
+  })
+
+  .state('menu.infoClinica', {
+    url: '/infoClinica/:clinica',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/infoClinica.html',
+        controller: 'infoClinicaCtrl'
+      }
+    }
+  })
+
 $urlRouterProvider.otherwise('/login')
 
   

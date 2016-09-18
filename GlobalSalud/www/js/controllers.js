@@ -389,3 +389,117 @@ angular.module('app.controllers', [])
 
 })
  
+.controller('climedCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
+
+
+    $scope.listar = function(){
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Climed'})
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.clinicas = response;
+            console.log(response);
+        })
+    }
+
+    $scope.refresh = function(){
+
+        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Climed'})
+        
+        .success(function(response) {
+            $scope.clinicas = response;
+            console.log(response);
+        })
+    }
+
+    $scope.listar();
+
+
+    $scope.elegirClinica = function(clinica){
+
+        $state.go('menu.infoClinica',{clinica:clinica});
+
+    }
+
+    $scope.doRefresh = function() {
+    
+        console.log('Refreshing!');
+
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
+
+})
+
+.controller('farmaciasCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
+
+
+    $scope.listar = function(){
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Farmacias'})
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.farmacias = response;
+            console.log(response);
+        })
+    }
+
+    $scope.refresh = function(){
+
+        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Farmacias'})
+        
+        .success(function(response) {
+            $scope.farmacias = response;
+            console.log(response);
+        })
+    }
+
+    $scope.listar();
+
+    $scope.doRefresh = function() {
+    
+        console.log('Refreshing!');
+
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
+
+})
+
+.controller('infoClinicaCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
+
+    $scope.listar = function(){
+        clinica = $stateParams.clinica;
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.clinica = response;
+        })
+
+    }
+
+    $scope.listarEsp = function(){
+        
+        clinica = $stateParams.clinica;
+        UserSrv.showLoading();
+
+        $http.post( UserSrv.getPath() + "/listarEspecialidades.php", {'clinica':clinica})
+        
+        .success(function(response) {
+                    console.log(response);
+            UserSrv.hideLoading();
+            $scope.especialidades = response;
+        })
+
+    }
+
+    $scope.listar();
+
+    $scope.listarEsp();
+
+
+})

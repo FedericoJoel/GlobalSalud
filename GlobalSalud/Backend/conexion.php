@@ -3,8 +3,8 @@
 class Conexion extends mysqli {
 	
 	public function __construct() {
-	 parent::__construct('localhost','l3000498_pruebas','Apolo2016','l3000498_pruebas');
-		// parent::__construct('localhost','root','root','l3000498_pruebas');
+	 // parent::__construct('localhost','l3000498_pruebas','Apolo2016','l3000498_pruebas');
+		parent::__construct('localhost','root','root','Pruebas');
 		$this->set_charset("utf8");
 	}
 

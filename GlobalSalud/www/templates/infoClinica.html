@@ -1,0 +1,28 @@
+<ion-view title="<b>Solicitar Turno</b>" id="page13" class=" ">
+    <ion-content padding="true" class="has-header">
+        <ion-list id="solicitarTurno-list7" class=" ">
+            <ion-item class="item-avatar  " id="solicitarTurno-list-item34">
+                <h2>{{clinica.NOMBRE}}</h2>
+                <p>{{clinica.DIRECCION}}</p>
+                <p>{{clinica.LOCALIDAD}}</p>
+            </ion-item>
+        </ion-list>
+
+        </br>
+
+        <ion-list class="manual-list-fullwidth " >
+       
+            <ion-item class="item-divider " id="menu-list-item-divider1"><center><b>Especialidades</b></center></ion-item>
+            <!-- BUSCADOR -->
+            <label class="item item-input" name="buscador">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="search" placeholder="Buscar" ng-model="buscador">
+            </label>      
+
+            <!-- LISTA -->
+            <ion-item id="busquedaPorPartido-list-item24" class="" ng-repeat="especialidad in especialidades | filter:buscador" >{{especialidad.NOMBRE}}</ion-item>
+
+        </ion-list>
+
+    </ion-content>
+</ion-view>
