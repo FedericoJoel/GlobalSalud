@@ -503,3 +503,24 @@ angular.module('app.controllers', [])
 
 
 })
+
+.controller('recomendarCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
+
+    $scope.enviar = function(){
+
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/altaRecomendacion.php", {'nombre':$scope.nombre,'apellido':$scope.apellido,'nro':$scope.nro})
+        
+        .success(function() {
+            UserSrv.hideLoadingerror("Su recomendacion se envio correctamente. Sera contactado a la brevedad.");
+
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+            $state.go('menu.t_pendientes');
+
+
+        })
+    }
+
+})

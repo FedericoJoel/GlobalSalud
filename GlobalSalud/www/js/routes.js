@@ -121,13 +121,23 @@ angular.module('app.routes', [])
       }
     }
   })
-
+  
   .state('menu.infoClinica', {
     url: '/infoClinica/:clinica',
     views: {
       'side-menu21': {
         templateUrl: 'templates/infoClinica.html',
         controller: 'infoClinicaCtrl'
+      }
+    }
+  })
+
+  .state('menu.recomendar', {
+    url: '/recomendar',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/recomendar.html',
+        controller: 'recomendarCtrl'
       }
     }
   })
