@@ -1,4 +1,4 @@
-<ion-view title="<b>Busqueda por partido</b>" hide-back-button="true" id="page7" class=" ">
+<ion-view title="<b>Busqueda por partido</b>" id="page7" class=" ">
     <ion-content padding="true" class=" manual-remove-top-padding has-header">
 
                 <!-- PULL TO REFRESH -->
@@ -14,9 +14,6 @@
                 <input type="search" placeholder="Buscar" ng-model="buscador">
             </label>
             
-            <!-- TODOS -->
-            <ion-item id="busquedaPorPartido-list-item15" ng-click="elegirLocalidad('Todos')" class="">Todos</ion-item>           
-
             <!-- LISTA -->
             <ion-item id="busquedaPorPartido-list-item24" ng-click="elegirLocalidad(localidad.LOCALIDAD)" class="" ng-repeat="localidad in filtered = (localidades |filter:{LOCALIDAD:buscador})" >{{localidad.LOCALIDAD}}</ion-item>
 

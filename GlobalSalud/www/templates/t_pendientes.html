@@ -12,7 +12,7 @@
         <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesEspera">
 
             <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="confirmar(solicitud.IDS)">
-                <img src="img/clinica.jpg">
+                <img src="img/Pendiente.jpg">
                 <h2royal><b>{{solicitud.CLINICA}}</b>
                     <p>Dir: {{solicitud.DIRECCION}}</p>
                     <p>Tipo: {{solicitud.ESP}}</p>
@@ -30,7 +30,7 @@
         <!-- LE TOCA AL OPERADOR -->
         <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesPendiente" >
             <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="rechazar(solicitud.ID)" style="background-color:#F0F0F0;"> <!-- hay que hacer la funcion rechazar -->
-            <img src="img/clinica.jpg">
+            <img src="img/Pendiente.jpg">
                 <h2royal><b>{{solicitud.CLINICA}}</b>
                     <p>Dir: {{solicitud.DIRECCION}}</p>
                     <p>Tipo: {{solicitud.ESP}}</p>
@@ -47,7 +47,7 @@
         <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesAbierto">
 
             <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="rechazar(solicitud.ID)" style="background-color:#F0F0F0;">
-                <img src="img/clinica.jpg">
+                <img src="img/Pendiente.jpg">
                 <h2royal><b>{{solicitud.MEDICO}}</b>
                     <p>{{solicitud.FECHAS | date:'dd/MM/yyyy'}}</p>
                     <p>{{solicitud.NOMBRE}}</p> 

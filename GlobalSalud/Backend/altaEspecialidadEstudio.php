@@ -1,9 +1,9 @@
 <?php
-	require("conexion.php");
+    require("conexion.php");
 
-	$db= new Conexion();
+    $db= new Conexion();
 
-	if (isset($_SERVER['HTTP_ORIGIN'])) {
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header('Access-Control-Allow-Credentials: true');
         header('Access-Control-Max-Age: 86400');    // cache for 1 day
@@ -19,21 +19,28 @@
             header("Access-Control-Allow-Headers:        {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
      
         exit(0);
-   	}
+    }
 
 
-	$data = json_decode(file_get_contents("php://input"));
+    $data = json_decode(file_get_contents("php://input"));
 
-	//$estado = $db->real_escape_string($data->estado);
-	$dni = $db->real_escape_string($data->dni);
+    //$estado = $db->real_escape_string($data->estado);
+    $dni = $db->real_escape_string($data->dni);
     $clinica = $db->real_escape_string($data->clinica);
     $nafiliado = $db->real_escape_string($data->nafiliado);
     $sugerido = $db->real_escape_string($data->sugerido);
     $especialidad = $db->real_escape_string($data->especialidad);
+    $tipo = $db->real_escape_string($data->tipo);
 
     date_default_timezone_set('America/Argentina/Buenos_Aires');
     $fecha = date("Y-m-d");
 
-	$query = $db->query("INSERT INTO Solicitudes (DNISOLICITANTE,MEDICO,FECHAS,ESTADO,IDAFILIADO,IDCLIMED,ESPECIALIDAD,TIPO) VALUES ('$dni','$sugerido','$fecha','Pendiente','$nafiliado','$clinica','$especialidad','1')");
-	
+    
+    $idesp = $db->query("SELECT IDESPECIALIDAD FROM Especialidad WHERE NOMBRE = $especialidad");
+
+    $query = $db->query("INSERT INTO Solicitudes (DNISOLICITANTE,MEDICO,FECHAS,ESTADO,IDAFILIADO,IDCLIMED,ESPECIALIDAD,TIPO) VALUES ('$dni','$sugerido','$fecha','Pendiente','$nafiliado','$clinica','$idesp','$tipo')");
+    
 ?>
+
+    
+	

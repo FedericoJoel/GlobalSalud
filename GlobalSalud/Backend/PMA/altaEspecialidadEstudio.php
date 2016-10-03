@@ -30,10 +30,11 @@
     $nafiliado = $db->real_escape_string($data->nafiliado);
     $sugerido = $db->real_escape_string($data->sugerido);
     $especialidad = $db->real_escape_string($data->especialidad);
+    $tipo = $db->real_escape_string($data->tipo);
 
     date_default_timezone_set('America/Argentina/Buenos_Aires');
     $fecha = date("Y-m-d");
 
-	$query = $db->query("INSERT INTO Solicitudes (DNISOLICITANTE,MEDICO,FECHAS,ESTADO,IDAFILIADO,IDCLIMED,ESPECIALIDAD,TIPO) VALUES ('$dni','$sugerido','$fecha','Pendiente','$nafiliado','$clinica','$especialidad','1')");
+	$query = $db->query("INSERT INTO Solicitudes (DNISOLICITANTE,MEDICO,FECHAS,ESTADO,IDAFILIADO,IDCLIMED,ESPECIALIDAD,TIPO) VALUES ('$dni','$sugerido','$fecha','Pendiente','$nafiliado','$clinica','$especialidad','$tipo')");
 	
 ?>

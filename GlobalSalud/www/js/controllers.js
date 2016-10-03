@@ -194,13 +194,18 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('busquedaPorPartidoCtrl', function($scope,$http,$state,$stateParams,UserSrv) {
+.controller('busquedaPorPartidoCtrl', function($scope,$http,$state,$stateParams,UserSrv,$ionicNavBarDelegate) {
 
-    $scope.esp = $stateParams.especialidad;
+    esp = $stateParams.especialidad;
+    tipo = $stateParams.tipo;
+
+    console.log(esp);
+
+    $ionicNavBarDelegate.showBackButton(true);
 
     $scope.listarLocalidades = function(){
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/listarLocalidades.php", {'especialidad':$scope.esp})
+        $http.post( UserSrv.getPath() + "/listarLocalidades.php", {'especialidad':esp})
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -209,7 +214,7 @@ angular.module('app.controllers', [])
     }
 
     $scope.refresh = function(){
-        $http.post( UserSrv.getPath() + "/listarLocalidades.php", {'especialidad':$scope.esp})
+        $http.post( UserSrv.getPath() + "/listarLocalidades.php", {'especialidad':esp})
         
         .success(function(response) {
             $scope.localidades = response;
@@ -226,11 +231,8 @@ angular.module('app.controllers', [])
         $scope.$broadcast('scroll.refreshComplete');
     };
 
-
     $scope.elegirLocalidad = function(localidad){
-
-        $state.go('menu.listaDeClinicas',{localidad:localidad, especialidad:$scope.esp});
-        
+        $state.go('menu.listaDeClinicas',{localidad:localidad, especialidad:esp,tipo:tipo});
     }
 
 })
@@ -241,9 +243,11 @@ angular.module('app.controllers', [])
 
 .controller('listaDeClinicasCtrl', function($scope,$http,$state,$stateParams,UserSrv) {
 
+    localidad = $stateParams.localidad;
+    especialidad = $stateParams.especialidad;
+    tipo = $stateParams.tipo;
+
     $scope.listar = function(){
-        localidad = $stateParams.localidad;
-        especialidad = $stateParams.especialidad;
         UserSrv.showLoading();
         $http.post( UserSrv.getPath() + "/listarClinicas.php", {'localidad':localidad,'especialidad':especialidad})
         
@@ -268,11 +272,18 @@ angular.module('app.controllers', [])
 
     $scope.listar();
 
-    console.log($scope.clinicas);
 
     $scope.elegirClinica = function(clinica){
-
-        $state.go('menu.solicitarTurno',{clinica:clinica});
+        
+        if (especialidad == 'Clinico'){
+            $state.go('menu.solicitarTurno',{clinica:clinica});
+        }
+        else if(tipo == '2'){
+            $state.go('menu.solicitarEspecialista',{clinica:clinica, especialidad:especialidad});
+        }
+        else {
+            $state.go('menu.solicitarEstudio',{clinica:clinica, especialidad:especialidad});
+        }
 
     }
 
@@ -283,7 +294,6 @@ angular.module('app.controllers', [])
         $scope.refresh();
         $scope.$broadcast('scroll.refreshComplete');
     };
-
 
 })
    
@@ -501,7 +511,6 @@ angular.module('app.controllers', [])
 
     $scope.listarEsp();
 
-
 })
 
 .controller('recomendarCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
@@ -521,6 +530,226 @@ angular.module('app.controllers', [])
 
 
         })
+    }
+
+})
+
+.controller('seleccionEspecialidadCtrl', function($scope,$http,$state,$stateParams,UserSrv,$ionicHistory,$location) {
+
+    $scope.listarEspecialidades = function(){
+        UserSrv.showLoading();
+       $http.post( UserSrv.getPath() + "/listarEspecialidadoEstudio.php", {'tipo':'especialidad'})
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.especialidades = response;
+        })
+    }
+
+    $scope.refresh = function(){
+        $http.post( UserSrv.getPath() + "/listarEspecialidadoEstudio.php", {'tipo':'especialidad'})
+        
+        .success(function(response) {
+            $scope.especialidades = response;
+        })
+    }
+
+    $scope.listarEspecialidades();
+
+    $scope.doRefresh = function() {
+    
+        console.log('Refreshing!');
+
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
+
+
+    $scope.elegirEspecialidad = function(especialidad){
+        $state.go('menu.busquedaPorPartido', {especialidad:especialidad,tipo:'2'});
+    }
+
+})
+
+.controller('solicitarEspecialistaCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory,$cordovaCamera) {
+
+    clinica = $stateParams.clinica;
+    $scope.especialidad = $stateParams.especialidad;
+
+    $scope.srcImage = "";
+
+    $scope.listar = function(){
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.clinica = response;
+        })
+    }
+
+    $scope.listar();
+
+    $scope.tomarFoto = function(){
+
+        var options = {
+            quality: 80,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.CAMERA,
+            allowEdit: true,
+            encodingType: Camera.EncodingType.JPEG,
+            targetWidth: 250,
+            targetHeight: 250,
+            popoverOptions: CameraPopoverOptions,
+            saveToPhotoAlbum: false
+        };
+         
+        $cordovaCamera.getPicture(options).then(function(imageData) {
+            $scope.srcImage = "data:image/jpeg;base64," + imageData;
+           
+        }, function(err) {
+            // error
+        });
+
+    }
+
+    $scope.enviar = function(){
+        // dni = UserSrv.getDNI();
+        // carnet = UserSrv.getNsocio();
+        // sugerido = $scope.sugerido;
+
+        // UserSrv.showLoading();
+        // $http.post( UserSrv.getPath() + "/altaEspecialidadEstudio.php", {'clinica':clinica,'dni':dni,'nafiliado':carnet,'sugerido':sugerido,'especialidad':$scope.especialidad,'tipo':'3'})
+        
+        // .success(function() {
+        //     UserSrv.hideLoadingerror("Su solicitud se ha enviado con exito");
+
+        //     $ionicHistory.nextViewOptions({
+        //         disableBack: true
+        //     });
+        if($scope.srcImage==""){
+            var alertPopup = $ionicPopup.alert({
+            title: 'Debe tomar una foto de la orden para poder enviar la solicitud.',
+            });
+        }else{
+        var alertPopup = $ionicPopup.alert({
+            title: 'Su solicitud fue enviada correctamente',
+        });
+        $state.go('menu.t_pendientes');
+        }
+
+        // })
+    }
+
+})
+
+.controller('solicitarEstudioCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory,$cordovaCamera) {
+
+    clinica = $stateParams.clinica;
+    $scope.especialidad = $stateParams.especialidad;
+
+    $scope.srcImage="";
+
+    $scope.listar = function(){
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.clinica = response;
+        })
+    }
+
+
+    $scope.listar();
+
+
+    $scope.enviar = function(){
+        // dni = UserSrv.getDNI();
+        // carnet = UserSrv.getNsocio();
+        // sugerido = $scope.sugerido;
+
+        // UserSrv.showLoading();
+        // $http.post( UserSrv.getPath() + "/altaEspecialidadEstudio.php", {'clinica':clinica,'dni':dni,'nafiliado':carnet,'sugerido':sugerido,'especialidad':$scope.especialidad,'tipo':'3'})
+        
+        // .success(function() {
+        //     UserSrv.hideLoadingerror("Su solicitud se ha enviado con exito");
+
+        //     $ionicHistory.nextViewOptions({
+        //         disableBack: true
+        //     });
+        if($scope.srcImage==""){
+            var alertPopup = $ionicPopup.alert({
+            title: 'Debe tomar una foto de la orden para poder enviar la solicitud.',
+            });
+        }else{
+        var alertPopup = $ionicPopup.alert({
+            title: 'Su solicitud fue enviada correctamente',
+        });
+        $state.go('menu.t_pendientes');
+        }
+
+        // })
+    }
+
+    $scope.tomarFoto = function(){
+
+        var options = {
+            quality: 80,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.CAMERA,
+            allowEdit: true,
+            encodingType: Camera.EncodingType.JPEG,
+            targetWidth: 250,
+            targetHeight: 250,
+            popoverOptions: CameraPopoverOptions,
+            saveToPhotoAlbum: false
+        };
+         
+        $cordovaCamera.getPicture(options).then(function(imageData) {
+            $scope.srcImage = "data:image/jpeg;base64," + imageData;
+           
+        }, function(err) {
+            // error
+        });
+    }
+
+})
+
+.controller('seleccionEstudioCtrl', function($scope,$http,$state,$stateParams,UserSrv,$ionicHistory,$location) {
+
+    $scope.listarEstudios = function(){
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/listarEspecialidadoEstudio.php", {'tipo':'estudio'})
+
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.estudios = response;
+        })
+    }
+
+    $scope.refresh = function(){
+        $http.post( UserSrv.getPath() + "/listarEspecialidadoEstudio.php", {'tipo':'estudio'})
+        
+        .success(function(response) {
+            $scope.estudios = response;
+        })
+    }
+
+    $scope.listarEstudios();
+
+    $scope.doRefresh = function() {
+    
+        console.log('Refreshing!');
+
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
+
+
+    $scope.elegirEstudio= function(estudio){
+        $state.go('menu.busquedaPorPartido', {especialidad:estudio,tipo:'3'});
     }
 
 })

@@ -53,7 +53,7 @@ angular.module('app.routes', [])
   })
 
   .state('menu.busquedaPorPartido', {
-    url: '/buscarpartido:especialidad',
+    url: '/buscarpartido/:especialidad/:tipo',
     views: {
       'side-menu21': {
         templateUrl: 'templates/busquedaPorPartido.html',
@@ -93,7 +93,7 @@ angular.module('app.routes', [])
   })
 
   .state('menu.listaDeClinicas', {
-    url: '/listaDeClinicas/:localidad/:especialidad',
+    url: '/listaDeClinicas/:localidad/:especialidad/:tipo',
     views: {
       'side-menu21': {
         templateUrl: 'templates/listaDeClinicas.html',
@@ -138,6 +138,46 @@ angular.module('app.routes', [])
       'side-menu21': {
         templateUrl: 'templates/recomendar.html',
         controller: 'recomendarCtrl'
+      }
+    }
+  })
+
+  .state('menu.seleccionEspecialidad', {
+    url: '/seleccionEspecialidad',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/seleccionEspecialidad.html',
+        controller: 'seleccionEspecialidadCtrl'
+      }
+    }
+  })
+
+  .state('menu.solicitarEspecialista', {
+    url: '/solicitarEspecialista/:clinica/:especialidad',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/solicitarEspecialista.html',
+        controller: 'solicitarEspecialistaCtrl'
+      }
+    }
+  })
+
+  .state('menu.solicitarEstudio', {
+    url: '/solicitarEstudio/:clinica/:especialidad',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/solicitarEstudio.html',
+        controller: 'solicitarEstudioCtrl'
+      }
+    }
+  })
+
+  .state('menu.seleccionEstudio', {
+    url: '/seleccionEstudio',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/seleccionEstudio.html',
+        controller: 'seleccionEstudioCtrl'
       }
     }
   })
