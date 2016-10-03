@@ -635,6 +635,10 @@ angular.module('app.controllers', [])
         var alertPopup = $ionicPopup.alert({
             title: 'Su solicitud fue enviada correctamente',
         });
+
+        $ionicHistory.nextViewOptions({
+                disableBack: true
+        });
         $state.go('menu.t_pendientes');
         }
 
@@ -685,6 +689,10 @@ angular.module('app.controllers', [])
         }else{
         var alertPopup = $ionicPopup.alert({
             title: 'Su solicitud fue enviada correctamente',
+        });
+
+        $ionicHistory.nextViewOptions({
+                disableBack: true
         });
         $state.go('menu.t_pendientes');
         }
