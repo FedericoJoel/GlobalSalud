@@ -1,7 +1,12 @@
 angular.module('app.controllers', [])
      
-.controller('loginCtrl', function($scope,UserSrv,$ionicPopup,$state,$http) {
+.controller('loginCtrl', function($scope,UserSrv,$ionicPopup,$state,$http,$ionicScrollDelegate) {
 	$scope.data = {};
+
+    $scope.scroll = function(){
+
+        $ionicScrollDelegate.scrollBottom();
+    }
 
 	$scope.login = function(){
         //ruta = UserSrv.getPath();
