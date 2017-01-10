@@ -9,15 +9,15 @@
             </ion-item>
             <label class="item item-input item-stacked-label " id="solicitarTurno-input3">
                 <span class="input-label">Medico Sugerido</span>
-                <input type="text" placeholder="Completar para sugerir un profecional" ng-model="$parent.sugerido">
+                <input type="text" placeholder="Completar para sugerir un profesional" ng-model="$parent.sugerido">
             </label>
         </ion-list>
         <div style="margin-right:-20px;">
             <button id="solicitarTurno-button2" style="left:-10px;color:#FFFFFF;" class=" button button-royal  button-full icon ion-android-camera" ng-click='tomarFoto()'> Tomar foto de la derivacion</button>
 
-            <button id="solicitarTurno-button2" style="left:-10px;color:#FFFFFF;" class=" button button-royal  button-full icon ion-android-checkbox-outline" ng-click='enviar()'> Enviar Solicitud</button>
+            <button id="EnviarSolicitud" style="left:-10px;color:#FFFFFF;" class=" button {{color}}  button-full" ng-click='enviar()'><div class="{{icon}}"> {{confirmacion}}</div></button>
         </div>
-
-                <center><img ng-src="{{srcImage || 'img/dummy.jpg'}}" id="srcImage" width="250 " height="250" style="display: block;  "></ceter>
+            <!-- <center>{{confirmacion}}</center> -->
+                <!-- <center><img ng-src="{{srcImage || 'img/dummy.jpg'}}" id="srcImage" width="250 " height="250" style="display: block;  "></ceter> -->
     </ion-content>
 </ion-view>

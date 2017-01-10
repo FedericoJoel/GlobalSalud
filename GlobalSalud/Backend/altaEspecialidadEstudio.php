@@ -32,11 +32,15 @@
     $especialidad = $db->real_escape_string($data->especialidad);
     $tipo = $db->real_escape_string($data->tipo);
 
+    echo($sugerido);
+    echo($especialidad);
+
     date_default_timezone_set('America/Argentina/Buenos_Aires');
     $fecha = date("Y-m-d");
 
     
     $idesp = $db->query("SELECT IDESPECIALIDAD FROM Especialidad WHERE NOMBRE = $especialidad");
+    echo($idesp);
 
     $query = $db->query("INSERT INTO Solicitudes (DNISOLICITANTE,MEDICO,FECHAS,ESTADO,IDAFILIADO,IDCLIMED,ESPECIALIDAD,TIPO) VALUES ('$dni','$sugerido','$fecha','Pendiente','$nafiliado','$clinica','$idesp','$tipo')");
     

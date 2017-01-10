@@ -102,12 +102,22 @@ angular.module('app.routes', [])
     }
   })
 
-  .state('menu.climed', {
-    url: '/climed',
+  .state('menu.clinicas', {
+    url: '/clinicas',
     views: {
       'side-menu21': {
-        templateUrl: 'templates/climed.html',
-        controller: 'climedCtrl'
+        templateUrl: 'templates/clinicas.html',
+        controller: 'clinicasCtrl'
+      }
+    }
+  })
+
+  .state('menu.particulares', {
+    url: '/particulares',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/particulares.html',
+        controller: 'clinicasCtrl'
       }
     }
   })
@@ -138,6 +148,16 @@ angular.module('app.routes', [])
       'side-menu21': {
         templateUrl: 'templates/recomendar.html',
         controller: 'recomendarCtrl'
+      }
+    }
+  })
+
+  .state('menu.contacto', {
+    url: '/contacto',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/contacto.html',
+        controller: 'contactoCtrl'
       }
     }
   })

@@ -38,6 +38,28 @@ angular.module('app.controllers', [])
         }
 	}
 
+    $scope.invitado = function(){
+        //ruta = UserSrv.getPath();
+            UserSrv.showLoading();
+
+            $http.post( UserSrv.getPath() + "/login.php", {'dni':1  , 'nafiliado':2})
+                .success(function(response) {
+                    if (response.validacion=="success") {
+                        UserSrv.setDNI(1);
+                        var dni = UserSrv.getDNI();
+                        UserSrv.setNsocio(2);
+                        UserSrv.hideLoading();
+                        $state.go('menu.t_pendientes');
+                    }else{
+                        UserSrv.hideLoadingerror("Tenemos problemas para ingresar como invitado en este momento, intenta mas tarde.");
+                    }
+                })
+                .error(function(data) {
+                    UserSrv.hideLoadingerror("Verifica tu conexion a internet");
+                });
+    }
+    
+
 })
 
 .controller('t_pendientesCtrl', function($scope,UserSrv,$state,$http) {
@@ -404,7 +426,7 @@ angular.module('app.controllers', [])
 
 })
  
-.controller('climedCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
+.controller('particularesCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
 
 
     $scope.listar = function(){
@@ -446,6 +468,51 @@ angular.module('app.controllers', [])
     };
 
 })
+
+
+.controller('clinicasCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
+
+
+    $scope.listar = function(){
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Climed'})
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.clinicas = response;
+            console.log(response);
+        })
+    }
+
+    $scope.refresh = function(){
+
+        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Climed'})
+        
+        .success(function(response) {
+            $scope.clinicas = response;
+            console.log(response);
+        })
+    }
+
+    $scope.listar();
+
+
+    $scope.elegirClinica = function(clinica){
+
+        $state.go('menu.infoClinica',{clinica:clinica});
+
+    }
+
+    $scope.doRefresh = function() {
+    
+        console.log('Refreshing!');
+
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
+
+})
+
 
 .controller('farmaciasCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
 
@@ -539,6 +606,27 @@ angular.module('app.controllers', [])
 
 })
 
+.controller('contactoCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
+
+    $scope.enviar = function(){
+
+        UserSrv.showLoading();
+        $http.post( UserSrv.getPath() + "/altaRecomendacion.php", {'nombre':$scope.nombre,'apellido':$scope.apellido,'nro':$scope.nro})
+        
+        .success(function() {
+            UserSrv.hideLoadingerror("Su recomendacion se envio correctamente. Sera contactado a la brevedad.");
+
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+            $state.go('menu.t_pendientes');
+
+
+        })
+    }
+
+})
+
 .controller('seleccionEspecialidadCtrl', function($scope,$http,$state,$stateParams,UserSrv,$ionicHistory,$location) {
 
     $scope.listarEspecialidades = function(){
@@ -576,10 +664,15 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('solicitarEspecialistaCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory,$cordovaCamera) {
+.controller('solicitarEspecialistaCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory,$cordovaCamera,$cordovaFileTransfer) {
 
     clinica = $stateParams.clinica;
     $scope.especialidad = $stateParams.especialidad;
+    console.log($scope.especialidad);
+    dni = UserSrv.getDNI();
+    carnet = UserSrv.getNsocio();
+    sugerido = $scope.sugerido;
+    console.log($scope.especialidad);
 
     $scope.srcImage = "";
 
@@ -590,6 +683,9 @@ angular.module('app.controllers', [])
         .success(function(response) {
             UserSrv.hideLoading();
             $scope.clinica = response;
+            $scope.confirmacion = " Debe tomar una foto";
+            $scope.icon = "icon ion-close-round";
+            $scope.color = "button-assertive"
         })
     }
 
@@ -611,6 +707,9 @@ angular.module('app.controllers', [])
          
         $cordovaCamera.getPicture(options).then(function(imageData) {
             $scope.srcImage = "data:image/jpeg;base64," + imageData;
+            $scope.icon="ion-checkmark-round";
+            $scope.color="button-balanced";
+            $scope.confirmacion=" Enviar solicitud";
            
         }, function(err) {
             // error
@@ -619,32 +718,56 @@ angular.module('app.controllers', [])
     }
 
     $scope.enviar = function(){
-        // dni = UserSrv.getDNI();
-        // carnet = UserSrv.getNsocio();
-        // sugerido = $scope.sugerido;
+     
+        // Destination URL 
+        var url = "http://www.gestionarturnos.com/upload.php";
+          
+         //File for Upload
+        var targetPath = $scope.srcImage;
+          
+         // File name only
+        var filename = dni + $scope.sugerido + '.jpg';
 
-        // UserSrv.showLoading();
-        // $http.post( UserSrv.getPath() + "/altaEspecialidadEstudio.php", {'clinica':clinica,'dni':dni,'nafiliado':carnet,'sugerido':sugerido,'especialidad':$scope.especialidad,'tipo':'3'})
-        
-        // .success(function() {
-        //     UserSrv.hideLoadingerror("Su solicitud se ha enviado con exito");
-
-        //     $ionicHistory.nextViewOptions({
-        //         disableBack: true
-        //     });
-        if($scope.srcImage==""){
+        var options = {
+            fileKey: "file",
+            fileName: filename,
+            chunkedMode: false,
+            mimeType: "image/jpg",
+            params : {'directory':'certificados', 'fileName':filename}
+        };
+            
+       if($scope.srcImage==""){
             var alertPopup = $ionicPopup.alert({
             title: 'Debe tomar una foto de la orden para poder enviar la solicitud.',
             });
-        }else{
-        var alertPopup = $ionicPopup.alert({
-            title: 'Su solicitud fue enviada correctamente',
-        });
+        }else{   
+            UserSrv.showLoading();
+            $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
 
-        $ionicHistory.nextViewOptions({
-                disableBack: true
-        });
-        $state.go('menu.t_pendientes');
+                console.log("SUCCESS: " + JSON.stringify(result.response));
+
+                $http.post( UserSrv.getPath() + "/altaEspecialidadEstudio.php", {'clinica':clinica,'dni':dni,'nafiliado':carnet,'sugerido':$scope.sugerido,'especialidad':$scope.especialidad,'tipo':'2','foto':filename})
+        
+                .success(function() {
+
+                    UserSrv.hideLoadingerror("Tu solicitud fue enviada correctamente");
+                
+
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true
+                    });
+
+                    $state.go('menu.t_pendientes');
+                })
+
+            }, function (err) {
+
+                UserSrv.hideLoadingerror("Encontramos un problema al enviar su turno, verifique su conexion a internet e intente nuevamente");
+                console.log("ERROR: " + JSON.stringify(err));
+
+            }, function (progress) {
+                // PROGRESS HANDLING GOES HERE
+            });
         }
 
         // })
@@ -652,10 +775,13 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('solicitarEstudioCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory,$cordovaCamera) {
+.controller('solicitarEstudioCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory,$cordovaCamera,$cordovaFileTransfer) {
 
     clinica = $stateParams.clinica;
     $scope.especialidad = $stateParams.especialidad;
+    dni = UserSrv.getDNI();
+    carnet = UserSrv.getNsocio();
+    sugerido = $scope.sugerido;
 
     $scope.srcImage="";
 
@@ -666,6 +792,9 @@ angular.module('app.controllers', [])
         .success(function(response) {
             UserSrv.hideLoading();
             $scope.clinica = response;
+            $scope.confirmacion = " Debe tomar una foto";
+            $scope.icon = "icon ion-close-round";
+            $scope.color = "button-assertive"
         })
     }
 
@@ -674,35 +803,57 @@ angular.module('app.controllers', [])
 
 
     $scope.enviar = function(){
-        // dni = UserSrv.getDNI();
-        // carnet = UserSrv.getNsocio();
-        // sugerido = $scope.sugerido;
 
-        // UserSrv.showLoading();
-        // $http.post( UserSrv.getPath() + "/altaEspecialidadEstudio.php", {'clinica':clinica,'dni':dni,'nafiliado':carnet,'sugerido':sugerido,'especialidad':$scope.especialidad,'tipo':'3'})
-        
-        // .success(function() {
-        //     UserSrv.hideLoadingerror("Su solicitud se ha enviado con exito");
+       var url = "http://www.gestionarturnos.com/upload.php";
+          
+         //File for Upload
+        var targetPath = $scope.srcImage;
+          
+         // File name only
+        var filename = dni + $scope.sugerido;
 
-        //     $ionicHistory.nextViewOptions({
-        //         disableBack: true
-        //     });
-        if($scope.srcImage==""){
+        var options = {
+            fileKey: "file",
+            fileName: filename,
+            chunkedMode: false,
+            mimeType: "image/jpg",
+            params : {'directory':'certificados', 'fileName':filename}
+        };
+            
+       if($scope.srcImage==""){
             var alertPopup = $ionicPopup.alert({
             title: 'Debe tomar una foto de la orden para poder enviar la solicitud.',
             });
-        }else{
-        var alertPopup = $ionicPopup.alert({
-            title: 'Su solicitud fue enviada correctamente',
-        });
+        }else{   
+            UserSrv.showLoading();
+            $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
 
-        $ionicHistory.nextViewOptions({
-                disableBack: true
-        });
-        $state.go('menu.t_pendientes');
+                console.log("SUCCESS: " + JSON.stringify(result.response));
+
+                $http.post( UserSrv.getPath() + "/altaEspecialidadEstudio.php", {'clinica':clinica,'dni':dni,'nafiliado':carnet,'sugerido':$scope.sugerido,'especialidad':$scope.especialidad,'tipo':'3','foto':filename})
+        
+                .success(function() {
+
+                    UserSrv.hideLoadingerror("Tu solicitud fue enviada correctamente");
+                
+
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true
+                    });
+
+                    $state.go('menu.t_pendientes');
+                })
+
+            }, function (err) {
+
+                UserSrv.hideLoadingerror("Encontramos un problema al enviar su turno, verifique su conexion a internet e intente nuevamente");
+                console.log("ERROR: " + JSON.stringify(err));
+
+            }, function (progress) {
+                // PROGRESS HANDLING GOES HERE
+            });
         }
 
-        // })
     }
 
     $scope.tomarFoto = function(){
@@ -721,7 +872,9 @@ angular.module('app.controllers', [])
          
         $cordovaCamera.getPicture(options).then(function(imageData) {
             $scope.srcImage = "data:image/jpeg;base64," + imageData;
-           
+            $scope.icon="ion-checkmark-round";
+            $scope.color="button-balanced";
+            $scope.confirmacion=" Enviar solicitud";
         }, function(err) {
             // error
         });
