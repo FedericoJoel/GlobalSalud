@@ -64,6 +64,7 @@ angular.module('app.controllers', [])
 
 .controller('t_pendientesCtrl', function($scope,UserSrv,$state,$http) {
 
+
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
 
@@ -777,29 +778,29 @@ angular.module('app.controllers', [])
 
 .controller('solicitarEstudioCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory,$cordovaCamera,$cordovaFileTransfer) {
 
-    clinica = $stateParams.clinica;
-    $scope.especialidad = $stateParams.especialidad;
+    // clinica = $stateParams.clinica;
+    // $scope.especialidad = $stateParams.especialidad;
     dni = UserSrv.getDNI();
     carnet = UserSrv.getNsocio();
     sugerido = $scope.sugerido;
+    $scope.confirmacion = " Debe tomar una foto";
+    $scope.icon = "icon ion-close-round";
+    $scope.color = "button-assertive"
 
     $scope.srcImage="";
 
-    $scope.listar = function(){
-        UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
+    // $scope.listar = function(){
+    //     UserSrv.showLoading();
+    //     $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
         
-        .success(function(response) {
-            UserSrv.hideLoading();
-            $scope.clinica = response;
-            $scope.confirmacion = " Debe tomar una foto";
-            $scope.icon = "icon ion-close-round";
-            $scope.color = "button-assertive"
-        })
-    }
-
-
-    $scope.listar();
+    //     .success(function(response) {
+    //         UserSrv.hideLoading();
+    //         $scope.clinica = response;
+    //         $scope.confirmacion = " Debe tomar una foto";
+    //         $scope.icon = "icon ion-close-round";
+    //         $scope.color = "button-assertive"
+    //     })
+    // }
 
 
     $scope.enviar = function(){
@@ -830,7 +831,7 @@ angular.module('app.controllers', [])
 
                 console.log("SUCCESS: " + JSON.stringify(result.response));
 
-                $http.post( UserSrv.getPath() + "/altaEspecialidadEstudio.php", {'clinica':clinica,'dni':dni,'nafiliado':carnet,'sugerido':$scope.sugerido,'especialidad':$scope.especialidad,'tipo':'3','foto':filename})
+                $http.post( UserSrv.getPath() + "/altaEstudio.php", {'dni':dni,'nafiliado':carnet,'sugerido':$scope.sugerido,'foto':filename})
         
                 .success(function() {
 

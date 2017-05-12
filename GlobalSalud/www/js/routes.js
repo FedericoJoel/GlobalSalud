@@ -183,7 +183,7 @@ angular.module('app.routes', [])
   })
 
   .state('menu.solicitarEstudio', {
-    url: '/solicitarEstudio/:clinica/:especialidad',
+    url: '/solicitarEstudio',
     views: {
       'side-menu21': {
         templateUrl: 'templates/solicitarEstudio.html',
