@@ -80,7 +80,7 @@ angular.module('app.controllers', [])
         })
 
 
-        // PENDIENTES
+        // PENDIENTES Y ABIERTOS
         UserSrv.showLoading();
         $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })
         
@@ -90,17 +90,6 @@ angular.module('app.controllers', [])
             UserSrv.hideLoading();
         })
 
-        // ABIERTOS
-
-        UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Abierto', 'tipo':'Pendiente' })
-        
-        .success(function(response) {
-
-            $scope.solicitudesAbierto = response;
-            console.log(response);
-            UserSrv.hideLoading();
-        })
     }
 
     $scope.refresh = function(){
@@ -116,7 +105,7 @@ angular.module('app.controllers', [])
         })
 
 
-        // PENDIENTES
+        // PENDIENTES Y ABIERTOS
         $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })
         
         .success(function(response) {
@@ -124,15 +113,6 @@ angular.module('app.controllers', [])
             console.log(response);
         })
 
-        // ABIERTOS
-
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Abierto', 'tipo':'Pendiente' })
-        
-        .success(function(response) {
-
-            $scope.solicitudesAbierto = response;
-            console.log(response);
-        })
     }
 
     $scope.confirmar = function(id){
@@ -191,7 +171,7 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Rechazado', 'tipo':'Pendiente'  })
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'tipo':'Rechazado'  })
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -202,7 +182,7 @@ angular.module('app.controllers', [])
 
     $scope.refresh = function(){
         var dni = UserSrv.getDNI();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Rechazado', 'tipo':'Pendiente'  })
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'tipo':'Rechazado'  })
         
         .success(function(response) {
             $scope.solicitudes = response;
@@ -811,7 +791,7 @@ angular.module('app.controllers', [])
         var targetPath = $scope.srcImage;
           
          // File name only
-        var filename = dni + $scope.sugerido;
+        var filename = dni + $scope.sugerido + '.jpg';
 
         var options = {
             fileKey: "file",
