@@ -74,8 +74,14 @@ angular.module('app.controllers', [])
         $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
         
         .success(function(response) {
-            $scope.solicitudesEspera = response;
-            console.log(response);
+            if (typeof response == "string") {
+                $scope.solicitudesEspera = [];
+            }
+            else{
+               $scope.solicitudesEspera = response;
+            }
+            
+            console.log($scope.solicitudesEspera);
             UserSrv.hideLoading();
         })
 
@@ -85,7 +91,12 @@ angular.module('app.controllers', [])
         $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })
         
         .success(function(response) {
-            $scope.solicitudesPendiente = response;
+            if (typeof response == "string"){
+                $scope.solicitudesPendiente = [];
+            }
+            else{
+                $scope.solicitudesPendiente = response;
+            }
             console.log(response);
             UserSrv.hideLoading();
         })
@@ -100,7 +111,12 @@ angular.module('app.controllers', [])
         $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
         
         .success(function(response) {
-            $scope.solicitudesEspera = response;
+            if (typeof response == "string") {
+                $scope.solicitudesEspera = [];
+            }
+            else{
+               $scope.solicitudesEspera = response;
+            }
             console.log(response);
         })
 
@@ -109,7 +125,12 @@ angular.module('app.controllers', [])
         $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })
         
         .success(function(response) {
-            $scope.solicitudesPendiente = response;
+            if (typeof response == "string"){
+                $scope.solicitudesPendiente = [];
+            }
+            else{
+                $scope.solicitudesPendiente = response;
+            }
             console.log(response);
         })
 
@@ -147,9 +168,11 @@ angular.module('app.controllers', [])
 
     $scope.refresh = function(){
         var dni = UserSrv.getDNI();
+        UserSrv.showLoading();
         $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Confirmado', 'confirmacion':2, 'tipo':'Turno' })
         
         .success(function(response) {
+            UserSrv.hideLoading();
             $scope.solicitudes = response;
             console.log($scope.solicitudes);
         })
@@ -335,6 +358,7 @@ angular.module('app.controllers', [])
         .success(function() {
             UserSrv.hideLoadingerror("Su solicitud se ha enviado con exito");
 
+            $scope.sugerido = "";
             $ionicHistory.nextViewOptions({
                 disableBack: true
             });
@@ -385,10 +409,10 @@ angular.module('app.controllers', [])
         
         .success(function() {
             UserSrv.hideLoadingerror("Su solicitud se ha enviado con exito");
-
-            $ionicHistory.nextViewOptions({
-                disableBack: true
-            });
+            $scope.motivo = "";
+            // $ionicHistory.nextViewOptions({
+            //     disableBack: true
+            // });  
             $state.go('menu.t_pendientes');
 
         })
@@ -400,8 +424,10 @@ angular.module('app.controllers', [])
         $http.post( UserSrv.getPath() + "/confirmacionSolicitud.php", {'idsolicitud':id, 'accion':'rechazar','motivo':$scope.motivo})
         
         .success(function(response) {
-            UserSrv.hideLoading();
+            UserSrv.hideLoadingerror("Se solicito el cambio de fecha, a la brevedad recibira un nuevo turno");
+            $scope.motivo = "";
             $scope.solicitud = response;
+            $state.go('menu.t_pendientes');
         })
     }
 
@@ -575,14 +601,18 @@ angular.module('app.controllers', [])
         
         .success(function() {
             UserSrv.hideLoadingerror("Su recomendacion se envio correctamente. Sera contactado a la brevedad.");
-
+            $scope.clearContent();
             $ionicHistory.nextViewOptions({
                 disableBack: true
             });
             $state.go('menu.t_pendientes');
-
-
         })
+    }
+
+    $scope.clearContent = function(){
+        $scope.nombre = "";
+        $scope.apellido = "";
+        $scope.nro = "";
     }
 
 })
@@ -707,7 +737,9 @@ angular.module('app.controllers', [])
         var targetPath = $scope.srcImage;
           
          // File name only
-        var filename = dni + $scope.sugerido + '.jpg';
+        var d = new Date();
+        tiempo = d.getTime();
+        var filename = tiempo.toString() + '.jpg';
 
         var options = {
             fileKey: "file",
@@ -732,11 +764,15 @@ angular.module('app.controllers', [])
                 .success(function() {
 
                     UserSrv.hideLoadingerror("Tu solicitud fue enviada correctamente");
-                
+                    $scope.sugerido = "";
 
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
+
+                    $scope.confirmacion = " Debe tomar una foto";
+                    $scope.icon = "icon ion-close-round";
+                    $scope.color = "button-assertive"
 
                     $state.go('menu.t_pendientes');
                 })
@@ -791,7 +827,9 @@ angular.module('app.controllers', [])
         var targetPath = $scope.srcImage;
           
          // File name only
-        var filename = dni + $scope.sugerido + '.jpg';
+        var d = new Date();
+        tiempo = d.getTime();
+        var filename = tiempo.toString() + '.jpg';
 
         var options = {
             fileKey: "file",
@@ -816,11 +854,15 @@ angular.module('app.controllers', [])
                 .success(function() {
 
                     UserSrv.hideLoadingerror("Tu solicitud fue enviada correctamente");
-                
+                    $scope.sugerido = "";
 
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
+
+                    $scope.confirmacion = " Debe tomar una foto";
+                    $scope.icon = "icon ion-close-round";
+                    $scope.color = "button-assertive"
 
                     $state.go('menu.t_pendientes');
                 })

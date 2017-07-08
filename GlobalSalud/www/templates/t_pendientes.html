@@ -13,7 +13,8 @@
 
             <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="confirmar(solicitud.IDS)">
                 <img src="img/Pendiente.jpg">
-                <h2royal><b>{{solicitud.CLINICA}}</b>
+                <p>ID: {{solicitud.IDS}}</p>
+                <h2royal><b>{{solicitud.CLINICA}}</b>   
                     <p>Dir: {{solicitud.DIRECCION}}</p>
                     <p>Tipo: {{solicitud.ESP}}</p>
                     <p>Medico: {{solicitud.MEDICOASIGNADO}}</p>
@@ -28,9 +29,10 @@
 
         <!-- LISTA PENDIENTES -->
         <!-- LE TOCA AL OPERADOR -->
-        <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesPendiente" >
+        <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesPendiente track by solicitud.IDS" >
             <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="rechazar(solicitud.ID)" style="background-color:#F0F0F0;"> <!-- hay que hacer la funcion rechazar -->
             <img src="img/Pendiente.jpg">
+            <p>ID: {{solicitud.IDS}}</p>
                 <h2royal><b>{{solicitud.CLINICA}}</b>
                     <p>Dir: {{solicitud.DIRECCION}}</p>
                     <p>Tipo: {{solicitud.ESP}}</p>
