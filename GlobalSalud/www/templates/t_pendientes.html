@@ -1,11 +1,11 @@
 <ion-view title="<b>Turnos Pendiente</b>" hide-back-button="true" id="page6" class="background">
 
     <ion-content padding="true" class="has-header">
-        
+
 
         <!-- PULL TO REFRESH -->
         <ion-refresher on-refresh="doRefresh()">
-                     
+
         </ion-refresher>
         <!-- LISTA EN ESPERA -->
         <!-- ME TOCA A MI -->
@@ -13,8 +13,8 @@
 
             <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="confirmar(solicitud.IDS)">
                 <img src="img/Pendiente.jpg">
-                <p>ID: {{solicitud.IDS}}</p>
-                <h2royal><b>{{solicitud.CLINICA}}</b>   
+                <!-- <p>ID: {{solicitud.IDS}}</p> -->
+                <h2royal><b>{{solicitud.CLINICA}}</b>
                     <p>Dir: {{solicitud.DIRECCION}}</p>
                     <p>Tipo: {{solicitud.ESP}}</p>
                     <p>Medico: {{solicitud.MEDICOASIGNADO}}</p>
@@ -22,7 +22,7 @@
                     <p>Hora: {{solicitud.HORAT}}</p>
                     <i class="icon ion-clock"></i>
                 </h2royal>
-            </ion-item> 
+            </ion-item>
 
         </ion-list>
 
@@ -32,18 +32,18 @@
         <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth" ng-repeat="solicitud in solicitudesPendiente track by solicitud.IDS" >
             <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11" ng-click="rechazar(solicitud.ID)" style="background-color:#F0F0F0;"> <!-- hay que hacer la funcion rechazar -->
             <img src="img/Pendiente.jpg">
-            <p>ID: {{solicitud.IDS}}</p>
+            <!-- <p>ID: {{solicitud.IDS}}</p> -->
                 <h2royal><b>{{solicitud.CLINICA}}</b>
                     <p>Dir: {{solicitud.DIRECCION}}</p>
                     <p>Tipo: {{solicitud.ESP}}</p>
-                    <p>Fecha Solicitud: {{solicitud.FECHAS | date:'dd/MM/yyyy'}}</p> 
+                    <p>Fecha Solicitud: {{solicitud.FECHAS | date:'dd/MM/yyyy'}}</p>
                     <p>Medico Sugerido: {{solicitud.MEDICO}}</p>
                     <i class="icon ion-clock"></i>
                 </h2royal>
-            </ion-item> 
+            </ion-item>
 
         </ion-list>
-        
+
 
 
     </ion-content>
