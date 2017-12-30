@@ -1,4 +1,14 @@
 {
   "name": "CoberTec",
-  "app_id": "9c49752f"
+  "app_id": "9c49752f",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic1",
+  "watchPatterns": [
+    "scss/**/*",
+    "www/**/*",
+    "!www/lib/**/*",
+    "!www/**/*.map"
+  ]
 }

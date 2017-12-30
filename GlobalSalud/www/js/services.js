@@ -8,7 +8,35 @@ angular.module('app.services', [])
     var _dni;
     var _nsocio;
     var _path = "http://www.gestionarturnos.com/Fede"
+    var _confirmados
+    var _rechazados
+    var _pendientes
     // var _path = "http://localhost:8888";
+
+    this.setPendientes = function(num){
+        _pendientes=num;
+    }
+
+    this.getPendientes= function(){
+        return _pendientes;
+    }
+
+    this.setRechazados = function(num){
+        _rechazados=num;
+    }
+
+    this.getRechazados= function(){
+        return _rechazados;
+    }
+
+    this.setConfirmados = function(num){
+        _confirmados=num;
+    }
+
+    this.getConfirmados= function(){
+        return _confirmados;
+    }
+
     this.setDNI = function(dni){
         _dni=dni;
     }

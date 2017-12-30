@@ -42,7 +42,7 @@ angular.module('app.controllers', [])
         //ruta = UserSrv.getPath();
             UserSrv.showLoading();
 
-            $http.post( UserSrv.getPath() + "/login.php", {'dni':1  , 'nafiliado':2})
+            $http.post( UserSrv.getPath() + "/login.php", {'dni':1  , 'nafiliado':1})
                 .success(function(response) {
                     if (response.validacion=="success") {
                         UserSrv.setDNI(1);
@@ -79,6 +79,9 @@ angular.module('app.controllers', [])
             }
             else{
                $scope.solicitudesEspera = response;
+               response.length();
+               UserSrv.setPendientes(response.length);
+               console.log(UserSrv.getPendientes());
             }
             
             console.log($scope.solicitudesEspera);
@@ -113,9 +116,15 @@ angular.module('app.controllers', [])
         .success(function(response) {
             if (typeof response == "string") {
                 $scope.solicitudesEspera = [];
+                // count  = response.length;
+                // UserSrv.setPendientes(count);
+                // console.log(UserSrv.getPendientes());
             }
             else{
                $scope.solicitudesEspera = response;
+            //    response.length();
+            //    UserSrv.setPendientes(response.length);
+
             }
             console.log(response);
         })
