@@ -10,3 +10,15 @@
 .logo{
 	margin-top: 10%;
 }
+
+.portadaClinica{
+	background: url('../img/portada-clinica.jpg');
+	background-size: cover; 
+	background-repeat: no-repeat;
+}
+
+.portadaParticular{
+	background: url('../img/particular.jpg');
+	background-size: cover; 
+	background-repeat: no-repeat;
+}
