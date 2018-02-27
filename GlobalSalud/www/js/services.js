@@ -8,10 +8,19 @@ angular.module('app.services', [])
     var _dni;
     var _nsocio;
     var _path = "http://www.gestionarturnos.com/Fede"
+    var _ruta = "http://api.gestionarturnos.com"
     var _confirmados
     var _rechazados
     var _pendientes
     // var _path = "http://localhost:8888";
+
+    this.getRuta = function(ruta){
+        return _ruta;
+    }
+
+    this.setRuta = function(ruta){
+        _ruta=ruta;
+    }
 
     this.setPendientes = function(num){
         _pendientes=num;

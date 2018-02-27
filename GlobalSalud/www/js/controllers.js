@@ -71,7 +71,7 @@ angular.module('app.controllers', [])
 
         // EN ESPERA
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' }) // /solicitud/enespera
         
         .success(function(response) {
             if (typeof response == "string") {
@@ -91,7 +91,7 @@ angular.module('app.controllers', [])
 
         // PENDIENTES Y ABIERTOS
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })// /solicitud/pendientesyabiertas
         
         .success(function(response) {
             if (typeof response == "string"){
@@ -131,7 +131,7 @@ angular.module('app.controllers', [])
 
 
         // PENDIENTES Y ABIERTOS
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })
+        $http.post("http://api.gestionarturnos.com/solicitud/pendientesyabiertas", {"dni":dni})
         
         .success(function(response) {
             if (typeof response == "string"){
@@ -166,7 +166,7 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Confirmado', 'confirmacion':2, 'tipo':'Turno' })
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Confirmado', 'confirmacion':2, 'tipo':'Turno' }) // /solicitud/confirmadas
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -203,7 +203,7 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'tipo':'Rechazado'  })
+        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'tipo':'Rechazado'  }) // /solicitud/rechazadas
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -245,7 +245,7 @@ angular.module('app.controllers', [])
 
     $scope.listarLocalidades = function(){
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/listarLocalidades.php", {'especialidad':esp})
+        $http.post( UserSrv.getPath() + "/listarLocalidades.php", {'especialidad':esp}) // /climed/clinicasPorEspecialidad/id
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -289,7 +289,8 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/listarClinicas.php", {'localidad':localidad,'especialidad':especialidad})
+        $http.post( UserSrv.getPath() + "/listarClinicas.php", {'localidad':localidad,'especialidad':especialidad}) //aca dejo en minuscula 
+        // POST /climed/clinicasPorEspecialidadYLocalidad 
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -342,7 +343,7 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         clinica = $stateParams.clinica;
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
+        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica}) //GET /climed/:id
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -384,7 +385,7 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         id = $stateParams.id;
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/mostrarsolicitud.php", {'id':id})
+        $http.post( UserSrv.getPath() + "/mostrarsolicitud.php", {'id':id})// get solicitud/solicitudApp/:id
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -415,7 +416,7 @@ angular.module('app.controllers', [])
         id = $stateParams.id;
         UserSrv.showLoading();
         $http.post( UserSrv.getPath() + "/confirmacionSolicitud.php", {'idsolicitud':id, 'accion':'confirmar','motivo':$scope.motivo})
-        
+        // post solo id solicitud/confirmar
         .success(function() {
             UserSrv.hideLoadingerror("Su solicitud se ha enviado con exito");
             $scope.motivo = "";
@@ -431,7 +432,7 @@ angular.module('app.controllers', [])
         id = $stateParams.id;
         UserSrv.showLoading();
         $http.post( UserSrv.getPath() + "/confirmacionSolicitud.php", {'idsolicitud':id, 'accion':'rechazar','motivo':$scope.motivo})
-        
+        //POST /solicitud/rechazar
         .success(function(response) {
             UserSrv.hideLoadingerror("Se solicito el cambio de fecha, a la brevedad recibira un nuevo turno");
             $scope.motivo = "";
@@ -698,7 +699,7 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
+        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})// get /climed/:id
         
         .success(function(response) {
             UserSrv.hideLoading();
