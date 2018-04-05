@@ -1,4 +1,8 @@
 angular.module('app.controllers', [])
+
+.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push('APIInterceptor');
+  }])
      
 .controller('loginCtrl', function($scope,UserSrv,$ionicPopup,$state,$http,$ionicScrollDelegate) {
 	$scope.data = {};
@@ -19,21 +23,24 @@ angular.module('app.controllers', [])
         }else{
 
             UserSrv.showLoading();
-
-            $http.post( UserSrv.getPath() + "/login.php", {'dni':$scope.data.dni, 'nafiliado':$scope.data.nafiliado})
+            var credenciales = {
+                'name': $scope.data.dni,
+                'password': $scope.data.nafiliado
+              }
+            $http.post( UserSrv.getRuta() + "/login", credenciales)
                 .success(function(response) {
-                    if (response.validacion=="success") {
-                        UserSrv.setDNI($scope.data.dni);
-                        var dni = UserSrv.getDNI();
-                        UserSrv.setNsocio($scope.data.nafiliado);
-                        UserSrv.hideLoading();
-                        $state.go('menu.t_pendientes');
-                    }else{
-                        UserSrv.hideLoadingerror("Combinacion de usuario y contraseña incorrectos");
-                    }
+                    var token = response.data.token
+                    var decoded = jwt_decode(token);
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('logueado', true);
+                    localStorage.setItem('dni', $scope.data.dni);
+                    localStorage.setItem('nafiliado', $scope.data.nafiliado);
+                    var dni = UserSrv.getDNI();
+                    UserSrv.hideLoading();
+                    $state.go('menu.t_pendientes');
                 })
                 .error(function(data) {
-                    UserSrv.hideLoadingerror("Error de conexion");
+                    UserSrv.hideLoadingerror("Combinacion de usuario y contraseña incorrectos");
                 });
         }
 	}
@@ -71,7 +78,7 @@ angular.module('app.controllers', [])
 
         // EN ESPERA
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' }) // /solicitud/enespera
+        $http.get( UserSrv.getRuta() + "/solicitud/enespera/" + dni) // /solicitud/enespera
         
         .success(function(response) {
             if (typeof response == "string") {
@@ -91,7 +98,7 @@ angular.module('app.controllers', [])
 
         // PENDIENTES Y ABIERTOS
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })// /solicitud/pendientesyabiertas
+        $http.get( UserSrv.getRuta() + "/solicitud/pendientesyabiertas/" + dni)
         
         .success(function(response) {
             if (typeof response == "string"){
@@ -111,7 +118,7 @@ angular.module('app.controllers', [])
 
 
         // EN ESPERA
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
+        $http.get( UserSrv.getRuta() + "/solicitud/enespera/" + dni)
         
         .success(function(response) {
             if (typeof response == "string") {
@@ -131,7 +138,7 @@ angular.module('app.controllers', [])
 
 
         // PENDIENTES Y ABIERTOS
-        $http.post("http://api.gestionarturnos.com/solicitud/pendientesyabiertas", {"dni":dni})
+        $http.get( UserSrv.getRuta() + "/solicitud/pendientesyabiertas/" + dni)
         
         .success(function(response) {
             if (typeof response == "string"){
@@ -492,7 +499,7 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Climed'})
+        $http.get(UserSrv.getRuta() + "/climedApp/all")
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -503,7 +510,7 @@ angular.module('app.controllers', [])
 
     $scope.refresh = function(){
 
-        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Climed'})
+        $http.get(UserSrv.getRuta() + "/climedApp/all")
         
         .success(function(response) {
             $scope.clinicas = response;
@@ -536,7 +543,7 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Farmacias'})
+        $http.get( UserSrv.getRuta() + "/farmaciaApp/all")
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -547,7 +554,7 @@ angular.module('app.controllers', [])
 
     $scope.refresh = function(){
 
-        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Farmacias'})
+        $http.get( UserSrv.getRuta() + "/farmaciaApp/all")
         
         .success(function(response) {
             $scope.farmacias = response;
@@ -572,7 +579,7 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         clinica = $stateParams.clinica;
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
+        $http.get( UserSrv.getRuta() + "/climedApp/" + clinica)
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -586,7 +593,7 @@ angular.module('app.controllers', [])
         clinica = $stateParams.clinica;
         UserSrv.showLoading();
 
-        $http.post( UserSrv.getPath() + "/listarEspecialidades.php", {'clinica':clinica})
+        $http.get( UserSrv.getRuta() + "/climedApp/especialidades/" + clinica)
         
         .success(function(response) {
                     console.log(response);
@@ -607,7 +614,7 @@ angular.module('app.controllers', [])
     $scope.enviar = function(){
 
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/altaRecomendacion.php", {'nombre':$scope.nombre,'apellido':$scope.apellido,'nro':$scope.nro})
+        $http.post( UserSrv.getRuta() + "/recomendacionApp", {'NOMBRE':$scope.nombre,'APELLIDO':$scope.apellido,'NRO':$scope.nro})
         
         .success(function() {
             UserSrv.hideLoadingerror("Su recomendacion se envio correctamente. Sera contactado a la brevedad.");

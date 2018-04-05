@@ -1,5 +1,22 @@
 angular.module('app.routes', [])
 
+.run(function($rootScope,$state,$ionicHistory) {
+
+  // Listen to '$locationChangeSuccess', not '$stateChangeStart'
+  $rootScope.$on('$locationChangeSuccess', function() {
+      if(localStorage.getItem('logueado') == 'false'){
+        // log-in promise failed. Redirect to log-in page.
+        $state.go('login')
+
+      } else if (window.location.hash.substr(2) == 'login'){
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+        $state.go('menu.t_pendientes');
+      }
+  })
+})
+
 .config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
