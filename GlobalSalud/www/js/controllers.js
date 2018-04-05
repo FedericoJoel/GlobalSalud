@@ -138,7 +138,11 @@ angular.module('app.controllers', [])
 
 
         // PENDIENTES Y ABIERTOS
+<<<<<<< HEAD
         $http.get( UserSrv.getRuta() + "/solicitud/pendientesyabiertas/" + dni)
+=======
+        $http.post('http://api.gestionarturnos.com/solicitud/pendientesyabiertas', {'dni':dni})
+>>>>>>> 15e78a73d0f1452c0f33aadaaab30a17796fb34e
         
         .success(function(response) {
             if (typeof response == "string"){
@@ -150,6 +154,16 @@ angular.module('app.controllers', [])
             console.log(response);
         })
 
+        /*$http({   
+            method: 'POST',   
+            url: 'http://api.gestionarturnos.com/solicitud/pendientesyabiertas', 
+            data:{'dni':dni} 
+        })
+            .then(
+                function successCallback(response) {     
+                    console.log(response);
+                }
+            )*/
     }
 
     $scope.confirmar = function(id){

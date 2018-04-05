@@ -1,14 +1,15 @@
 <ion-view title="<b>Solicitar Turno</b>" id="page13" class=" ">
-    <ion-content padding="true" class="has-header">
-        <ion-list id="solicitarTurno-list7" class=" ">
-            <ion-item class="item-avatar  " id="solicitarTurno-list-item34">
-                <h2>{{clinica.NOMBRE}}</h2>
-                <p>{{clinica.DIRECCION}}</p>
-                <p>{{clinica.LOCALIDAD}}</p>
-            </ion-item>
-        </ion-list>
-
-        </br>
+    <ion-content padding="false" class="has-header" style="">
+        <div ng-class="{'portadaParticular': clinica.PARTICULAR == 1, 'portadaClinica': clinica.PARTICULAR == 0}" style="margin-top: -10px;">
+            <div style="background: rgba(0,0,0,0.7); text-align: center; color: white; padding-top: 5px; padding-bottom: 5px;">
+                
+                        <h4 style="color: #139DFF;">{{clinica.NOMBRE}}</h2>
+                        <h5 style="color: white;"><i class="icon ion-navigate"></i> {{clinica.DIRECCION}}</h5>
+                        <h5 style="color: white;"><i class="icon ion-location"></i> {{clinica.LOCALIDAD}}</h5>
+                        <h5 style="color: white;"><i class="icon ion-ios-telephone"></i> {{clinica.TELEFONO}}</h5>
+                    
+            </div>
+        </div>
 
         <ion-list class="manual-list-fullwidth " >
        
