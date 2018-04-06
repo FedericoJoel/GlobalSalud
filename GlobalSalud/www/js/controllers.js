@@ -774,6 +774,7 @@ angular.module('app.controllers', [])
             chunkedMode: false,
             mimeType: "image/jpg",
             params : {'directory':'certificados', 'fileName':filename}
+            
         };
             
        if($scope.srcImage==""){
