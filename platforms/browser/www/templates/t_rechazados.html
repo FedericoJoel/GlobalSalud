@@ -1,0 +1,25 @@
+<ion-view title="<b>Turnos Rechazados</b>" hide-back-button="true" id="page6" class="background">
+    <ion-content padding="true" class="has-header" style:"padding-top:0px;">
+        
+                <!-- PULL TO REFRESH -->
+        <ion-refresher on-refresh="doRefresh()">
+                     
+        </ion-refresher>
+
+        <ion-list id="turnosPendientes-list3" class="manual-list-fullwidth" ng-repeat="solicitud in solicitudes">
+            
+            <ion-item class="item-avatar item-icon-right" id="turnosPendientes-list-item11">
+            <img src="img/Rechazado.jpg">
+                <h2 class="assertive"><b>{{solicitud.CLINICA}}</b>
+                    <p>Tipo: {{solicitud.ESP}}</p>
+                    <p>Fecha Solicitud: {{solicitud.FECHAS}}</p>
+                    <p>Motivo: {{solicitud.MOTIVO}}</p>
+                    <i class="icon ion-close"></i>
+                </h2>
+            </ion-item>
+            
+      
+        </ion-list>
+   
+    </ion-content>
+</ion-view>

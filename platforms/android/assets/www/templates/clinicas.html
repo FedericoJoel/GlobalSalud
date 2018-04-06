@@ -1,0 +1,32 @@
+
+<ion-view title="<b>Clinicas</b>">
+    <ion-content padding="true" class=" manual-remove-top-padding has-header">
+
+                <!-- PULL TO REFRESH -->
+        <ion-refresher on-refresh="doRefresh()">
+
+        </ion-refresher>
+
+        <ion-list class=" manual-list-fullwidth " >
+
+            <!-- BUSCADOR -->
+            <label class="item item-input" name="buscador">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="search" placeholder="Busqueda por Localidad, Nombre, Direccion..." ng-model="buscador">
+            </label>
+
+            <!-- LISTA -->
+            <ion-item class="item-avatar item-icon-right royal" ng-click="elegirClinica(clinica.IDCLI)" ng-repeat="clinica in clinicas|filter:{NOMBRE:buscador,PARTICULAR:0}">
+            <!-- clinica in clinicas|filter:{NOMBRE:buscador,PARTICULAR:0} -->
+                <img src="img/Clinica.jpg">
+                <h2royal><b>{{clinica.NOMBRE}}</b></h2royal>
+                <p>{{clinica.DIRECCION}}</p>
+                <p>{{clinica.LOCALIDAD}}</p>
+                <p>{{clinica.TELEFONO}}</p>
+                <i class="icon ion-android-arrow-dropright"></i>
+            </ion-item>
+
+        </ion-list>
+
+    </ion-content>
+</ion-view>

@@ -1,0 +1,37 @@
+<ion-side-menus enable-menu-with-back-views="false">
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-royal">
+            <ion-nav-back-button></ion-nav-back-button>
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+            </ion-nav-buttons>
+            <ion-nav-buttons side="right"><img src="img/icon.png" idth="35" height="35" style="display: block;"></ion-nav-buttons>
+        </ion-nav-bar>
+        <ion-nav-view name="side-menu21"></ion-nav-view>
+    </ion-side-menu-content>
+    <ion-side-menu side="left" id="side-menu21">
+        <ion-header-bar class="bar-royal">
+            <div class="title"><b>Menu</b></div>
+        </ion-header-bar>
+        <ion-content padding="true" class="side-menu-left has-header">
+            <ion-list id="menu-list2" class=" manual-list-fullwidth ">
+                <ion-item class="item-divider " id="menu-list-item-divider1"><b>Recomendar</b></ion-item>
+                <ion-item id="menu-list-item1" ui-sref="menu.recomendar" menu-close="">Invita a un amigo</ion-item>
+                <ion-item class="item-divider " id="menu-list-item-divider1"><b>Cartilla</b></ion-item>
+                <ion-item id="menu-list-item1" ui-sref="menu.clinicas" menu-close="" >Clinicas</ion-item>
+                <ion-item id="menu-list-item2" ui-sref="menu.particulares" menu-close="">Particulares</ion-item>
+                <ion-item id="menu-list-item3" ui-sref="menu.farmacias" menu-close="">Farmacias</ion-item>
+                <ion-item class="item-divider " id="menu-list-item-divider2"><b>Turnos</b></ion-item>
+                <ion-item id="menu-list-item8" ui-sref="menu.busquedaPorPartido({especialidad:'Clinico'})" menu-close="" class="  ">Turno clinico</ion-item>
+                <ion-item id="menu-list-item9" ui-sref="menu.seleccionEspecialidad()" menu-close="" class="  ">Turno especialista</ion-item>
+                <ion-item id="menu-list-item10" ui-sref="menu.seleccionEstudio()" menu-close="" class="  ">Turno estudios</ion-item>
+                <ion-item class="item-divider " id="menu-list-item-divider3"><b>Mis solicitudes</b></ion-item>
+                <ion-item id="menu-list-item12" ui-sref="menu.t_confirmados" menu-close="">Turnos confirmados</ion-item>
+                <ion-item id="menu-list-item33" ui-sref="menu.t_pendientes" menu-close="">Turnos pendientes</ion-item>
+                <ion-item id="menu-list-item31" ui-sref="menu.t_rechazados" menu-close="">Turnos rechazados</ion-item>
+                <ion-item class="item-divider " id="menu-list-item-divider4"><b>Ayuda</b></ion-item>
+                <ion-item id="contacto" ui-sref="menu.contacto" menu-close="">Contacto</ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>

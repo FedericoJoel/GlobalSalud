@@ -1,0 +1,23 @@
+<ion-view title="<b>Busqueda por partido</b>" id="page7" class=" ">
+    <ion-content padding="true" class=" manual-remove-top-padding has-header">
+
+                <!-- PULL TO REFRESH -->
+        <ion-refresher on-refresh="doRefresh()">
+                     
+        </ion-refresher>
+
+        <ion-list id="busquedaPorPartido-list4" class=" manual-list-fullwidth " >
+       
+            <!-- BUSCADOR -->
+            <label class="item item-input" name="buscador">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="search" placeholder="Buscar" ng-model="buscador">
+            </label>
+            
+            <!-- LISTA -->
+            <ion-item id="busquedaPorPartido-list-item24" ng-click="elegirLocalidad(localidad.LOCALIDAD)" class="" ng-repeat="localidad in filtered = (localidades |filter:{LOCALIDAD:buscador})" >{{localidad.LOCALIDAD}}</ion-item>
+
+        </ion-list>
+
+    </ion-content>
+</ion-view>

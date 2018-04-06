@@ -1,0 +1,26 @@
+<ion-view title="<b>Turnos Confirmados</b>" hide-back-button="true" id="t_confirmados" class="background">
+    <ion-content padding="true" class="has-header">
+
+            <!-- PULL TO REFRESH -->
+        <ion-refresher on-refresh="doRefresh()">
+                     
+        </ion-refresher>
+
+        <ion-list id="turnosPendientes-list3" class=" manual-list-fullwidth " ng-repeat="solicitud in solicitudes"> 
+
+            <ion-item class="item-avatar item-icon-right royal  " id="turnosPendientes-list-item11">
+                <img src="img/Confirmado.jpg">
+                <h2 class="balanced"><b>{{solicitud.CLINICA}}</b>
+                    <p>Dir: {{solicitud.DIRECCION}}</p>
+                    <p>Tipo: {{solicitud.ESP}}</p>
+                    <p>Medico: {{solicitud.MEDICOASIGNADO}}</p> 
+                    <p>Fecha: {{solicitud.FECHAT}}</p>
+                    <p>Hora: {{solicitud.HORAT}}</p>
+                    <i class="icon ion-checkmark"></i>
+                </h2>
+            </ion-item>
+
+        </ion-list>
+    
+    </ion-content>
+</ion-view>

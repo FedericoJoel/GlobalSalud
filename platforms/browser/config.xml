@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.ionicframework.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <feature name="Camera">
+        <param name="browser-package" value="Camera" />
+    </feature>
+    <feature name="Device">
+        <param name="browser-package" value="Device" />
+    </feature>
+    <name>Cobertec</name>
+    <description>
+        Aplicacion para solicitar turnos medicos. Prestadora de servicios COBERTEC Salud.
+    </description>
+    <author email="contacto@vadiun.com" href="http://vadiun.com/">
+      Vadiun
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <access launch-external="yes" origin="tel:*" />
+    <access launch-external="yes" origin="mailto:*" />
+    <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
+    <preference name="webviewbounce" value="false" />
+    <preference name="UIWebViewBounce" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="FadeSplashScreenDuration" value="500" />
+    <preference name="android-minSdkVersion" value="16" />
+    <preference name="BackupWebStorage" value="none" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="fullscreen" value="false" />
+    <preference name="android-windowSoftInputMode" value="adjustResize|stateHidden|stateVisible" />
+</widget>

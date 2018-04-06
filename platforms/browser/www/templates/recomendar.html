@@ -1,0 +1,21 @@
+<ion-view title="<b>Recomendar a un amigo</b>" id="page13" class=" ">
+    <ion-content padding="true" class="has-header">
+        <ion-list id="solicitarTurno-list7" class=" ">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Nombre</span>
+            <input type="text" placeholder="Introduzca el nombre" ng-model='$parent.nombre'>
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Apellido</span>
+            <input type="text" placeholder="Introduzca el apellido" ng-model='$parent.apellido'>
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Numero de contacto</span>
+            <input type="text" placeholder="Introduzca un numero telefonico" ng-model='$parent.nro'>
+          </label>
+        </ion-list>
+        <div style="margin-right:-20px;">
+            <button id="solicitarTurno-button2" style="left:-10px;color:#FFFFFF;" class=" button button-royal  button-full icon ion-android-checkbox-outline" ng-click='enviar()'>Enviar Recomendacion</button>
+        </div>
+    </ion-content>
+</ion-view>

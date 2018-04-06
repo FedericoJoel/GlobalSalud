@@ -1,0 +1,25 @@
+<ion-view title="Login" hide-nav-bar="true" id="page4" style="background-color:#007FDF;" class=" bg">
+    <ion-content padding="true" class="manual-ios-statusbar-padding" scroll="false">
+        
+        <center><img class="title-image logo hide-on-keyboard-open" src="img/coberteclogo.png"/> </center>
+        
+        <form id="login-form1" class="list lista">
+            <ion-list id="login-list1" class=" ">
+                <label class="item item-input logintxtbg">
+                    <span class="input-label">DNI</span>
+                    <input type="text" ng-model="data.dni">
+                </label>
+                <label class="item item-input logintxtbg">
+                    <span class="input-label">Nro Socio</span>
+                    <input type="password" ng-model="data.nafiliado">
+                </label>
+            </ion-list>
+            <div class="spacer" style="width: 300px; height: 39px;"></div>
+            <a class=" button button-light  button-block icon ion-log-in btt" ng-click="login()">Ingresar</a>
+            <br>
+            <b><center><a style="color:white;">¿Aun no tienes cuenta?</a></center></b>
+            <center><a class="" style="color:white;" ng-click="invitado()">Ingresa como invitado</a></center>
+
+        </form>
+    </ion-content>
+</ion-view>

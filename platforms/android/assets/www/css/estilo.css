@@ -1,0 +1,12 @@
+
+.letraRechazado{
+	color:#ef473a;
+}
+
+.background, .background .pane, .background .item-complex .item-content {
+    background-color: #F0F0F0;
+}
+
+.logo{
+	margin-top: 10%;
+}

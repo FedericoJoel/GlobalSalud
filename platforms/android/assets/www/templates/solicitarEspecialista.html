@@ -1,0 +1,23 @@
+<ion-view title="<b>Solicitar Turno {{especialidad}}</b>" id="page13" class=" ">
+    <ion-content padding="true" class="has-header">
+        <ion-list id="solicitarTurno-list7" class=" ">
+            <ion-item class="item-avatar  " id="solicitarTurno-list-item34">
+            <img src="img/Clinica.jpg">
+                <h2>{{clinica.NOMBRE}}</h2>
+                <p>{{clinica.DIRECCION}}</p>
+                <p>{{especialidad}}</p>
+            </ion-item>
+            <label class="item item-input item-stacked-label " id="solicitarTurno-input3">
+                <span class="input-label">Medico Sugerido</span>
+                <input type="text" placeholder="Completar para sugerir un profesional" ng-model="$parent.sugerido">
+            </label>
+        </ion-list>
+        <div style="margin-right:-20px;">
+            <button id="solicitarTurno-button2" style="left:-10px;color:#FFFFFF;" class=" button button-royal  button-full icon ion-android-camera" ng-click='tomarFoto()'> Tomar foto de la derivacion</button>
+
+            <button id="EnviarSolicitud" style="left:-10px;color:#FFFFFF;" class=" button {{color}}  button-full" ng-click='enviar()'><div class="{{icon}}"> {{confirmacion}}</div></button>
+        </div>
+            <!-- <center>{{confirmacion}}</center> -->
+                <!-- <center><img ng-src="{{srcImage || 'img/dummy.jpg'}}" id="srcImage" width="250 " height="250" style="display: block;  "></ceter> -->
+    </ion-content>
+</ion-view> 
