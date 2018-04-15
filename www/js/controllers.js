@@ -782,12 +782,13 @@ angular.module('app.controllers', [])
             title: 'Debe tomar una foto de la orden para poder enviar la solicitud.',
             });
         }else{   
+            
             UserSrv.showLoading();
             $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
 
                 console.log("SUCCESS: " + JSON.stringify(result.response));
 
-                $http.post( UserSrv.getPath() + "/altaEspecialidadEstudio.php", {'clinica':clinica,'dni':dni,'nafiliado':carnet,'sugerido':$scope.sugerido,'especialidad':$scope.especialidad,'tipo':'2','foto':filename})
+                $http.post( UserSrv.getRuta() + "/solicitud/createEspecialidad", {'IDCLIMED':clinica,'DNISOLICITANTE':dni,'IDAFILIADO':carnet,'MEDICO':$scope.sugerido,'ESPECIALIDAD':$scope.especialidad,'FOTO':filename})
         
                 .success(function() {
 
@@ -871,13 +872,13 @@ angular.module('app.controllers', [])
             var alertPopup = $ionicPopup.alert({
             title: 'Debe tomar una foto de la orden para poder enviar la solicitud.',
             });
-        }else{   
+        }else{
             UserSrv.showLoading();
             $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
 
                 console.log("SUCCESS: " + JSON.stringify(result.response));
 
-                $http.post( UserSrv.getPath() + "/altaEstudio.php", {'dni':dni,'nafiliado':carnet,'sugerido':$scope.sugerido,'foto':filename})
+                $http.post( UserSrv.getRuta() + "/solicitud/createEstudio", {'DNISOLICITANTE':dni,'IDAFILIADO':carnet,'MEDICO':$scope.sugerido,'FOTO':filename})
         
                 .success(function() {
 
@@ -891,7 +892,6 @@ angular.module('app.controllers', [])
                     $scope.confirmacion = " Debe tomar una foto";
                     $scope.icon = "icon ion-close-round";
                     $scope.color = "button-assertive"
-
                     $state.go('menu.t_pendientes');
                 })
 

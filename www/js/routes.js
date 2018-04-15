@@ -4,7 +4,7 @@ angular.module('app.routes', [])
 
   // Listen to '$locationChangeSuccess', not '$stateChangeStart'
   $rootScope.$on('$locationChangeSuccess', function() {
-      if(localStorage.getItem('logueado') == 'false'){
+      if(localStorage.getItem('logueado') == 'false' || localStorage.getItem('logueado') == undefined){
         // log-in promise failed. Redirect to log-in page.
         $state.go('login')
 
