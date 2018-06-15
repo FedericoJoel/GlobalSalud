@@ -1,4 +1,8 @@
 angular.module('app.controllers', [])
+
+.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push('APIInterceptor');
+  }])
      
 .controller('loginCtrl', function($scope,UserSrv,$ionicPopup,$state,$http,$ionicScrollDelegate) {
 	$scope.data = {};
@@ -19,21 +23,24 @@ angular.module('app.controllers', [])
         }else{
 
             UserSrv.showLoading();
-
-            $http.post( UserSrv.getPath() + "/login.php", {'dni':$scope.data.dni, 'nafiliado':$scope.data.nafiliado})
+            var credenciales = {
+                'name': $scope.data.dni,
+                'password': $scope.data.nafiliado
+              }
+            $http.post( UserSrv.getRuta() + "/login", credenciales)
                 .success(function(response) {
-                    if (response.validacion=="success") {
-                        UserSrv.setDNI($scope.data.dni);
-                        var dni = UserSrv.getDNI();
-                        UserSrv.setNsocio($scope.data.nafiliado);
-                        UserSrv.hideLoading();
-                        $state.go('menu.t_pendientes');
-                    }else{
-                        UserSrv.hideLoadingerror("Combinacion de usuario y contraseña incorrectos");
-                    }
+                    var token = response.data.token
+                    var decoded = jwt_decode(token);
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('logueado', true);
+                    localStorage.setItem('dni', $scope.data.dni);
+                    localStorage.setItem('nafiliado', $scope.data.nafiliado);
+                    var dni = UserSrv.getDNI();
+                    UserSrv.hideLoading();
+                    $state.go('menu.t_pendientes');
                 })
                 .error(function(data) {
-                    UserSrv.hideLoadingerror("Error de conexion");
+                    UserSrv.hideLoadingerror("Combinacion de usuario y contraseña incorrectos");
                 });
         }
 	}
@@ -71,7 +78,7 @@ angular.module('app.controllers', [])
 
         // EN ESPERA
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
+        $http.get(UserSrv.getRuta() + "/solicitud/enespera/" + dni) // /solicitud/enespera
         
         .success(function(response) {
             if (typeof response == "string") {
@@ -79,7 +86,7 @@ angular.module('app.controllers', [])
             }
             else{
                $scope.solicitudesEspera = response;
-               response.length();
+            //    response.length();
                UserSrv.setPendientes(response.length);
                console.log(UserSrv.getPendientes());
             }
@@ -91,7 +98,7 @@ angular.module('app.controllers', [])
 
         // PENDIENTES Y ABIERTOS
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })
+        $http.get( UserSrv.getRuta() + "/solicitud/pendientesyabiertas/" + dni)
         
         .success(function(response) {
             if (typeof response == "string"){
@@ -111,7 +118,7 @@ angular.module('app.controllers', [])
 
 
         // EN ESPERA
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'En Espera', 'confimarcion':0, 'tipo':'Turno' })
+        $http.get( UserSrv.getRuta() + "/solicitud/enespera/" + dni)
         
         .success(function(response) {
             if (typeof response == "string") {
@@ -131,7 +138,7 @@ angular.module('app.controllers', [])
 
 
         // PENDIENTES Y ABIERTOS
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Pendiente', 'tipo':'Pendiente' })
+        $http.get( UserSrv.getRuta() + "/solicitud/pendientesyabiertas/" + dni)
         
         .success(function(response) {
             if (typeof response == "string"){
@@ -143,6 +150,16 @@ angular.module('app.controllers', [])
             console.log(response);
         })
 
+        /*$http({   
+            method: 'POST',   
+            url: 'http://api.gestionarturnos.com/solicitud/pendientesyabiertas', 
+            data:{'dni':dni} 
+        })
+            .then(
+                function successCallback(response) {     
+                    console.log(response);
+                }
+            )*/
     }
 
     $scope.confirmar = function(id){
@@ -166,8 +183,8 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Confirmado', 'confirmacion':2, 'tipo':'Turno' })
-        
+        $http.get( UserSrv.getRuta() + "/solicitud/confirmadas/" + dni) // /solicitud/confirmadas
+
         .success(function(response) {
             UserSrv.hideLoading();
             $scope.solicitudes = response;
@@ -178,7 +195,7 @@ angular.module('app.controllers', [])
     $scope.refresh = function(){
         var dni = UserSrv.getDNI();
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'estado':'Confirmado', 'confirmacion':2, 'tipo':'Turno' })
+        $http.get( UserSrv.getRuta() + "/solicitud/confirmadas/" + dni)
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -203,7 +220,7 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         var dni = UserSrv.getDNI();
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'tipo':'Rechazado'  })
+        $http.get( UserSrv.getRuta() + "/solicitud/rechazadas/" + dni)// /solicitud/rechazadas
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -214,7 +231,7 @@ angular.module('app.controllers', [])
 
     $scope.refresh = function(){
         var dni = UserSrv.getDNI();
-        $http.post( UserSrv.getPath() + "/1.php", {'dni':dni, 'tipo':'Rechazado'  })
+        $http.get( UserSrv.getRuta() + "/solicitud/rechazadas/" + dni)// /solicitud/rechazadas
         
         .success(function(response) {
             $scope.solicitudes = response;
@@ -245,7 +262,7 @@ angular.module('app.controllers', [])
 
     $scope.listarLocalidades = function(){
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/listarLocalidades.php", {'especialidad':esp})
+        $http.get( UserSrv.getRuta() + "/climedApp/localidades/" + esp) // /climed/clinicasPorEspecialidad/id
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -254,7 +271,7 @@ angular.module('app.controllers', [])
     }
 
     $scope.refresh = function(){
-        $http.post( UserSrv.getPath() + "/listarLocalidades.php", {'especialidad':esp})
+        $http.get( UserSrv.getRuta() + "/climedApp/localidades/" + esp)
         
         .success(function(response) {
             $scope.localidades = response;
@@ -289,7 +306,8 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/listarClinicas.php", {'localidad':localidad,'especialidad':especialidad})
+        $http.post( UserSrv.getRuta() + "/climedApp/clinicasPorEspecialidadYLocalidad", {'localidad':localidad,'especialidad':especialidad}) //aca dejo en minuscula 
+        // POST /climed/clinicasPorEspecialidadYLocalidad 
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -302,7 +320,7 @@ angular.module('app.controllers', [])
         localidad = $stateParams.localidad;
         especialidad = $stateParams.especialidad;
 
-        $http.post( UserSrv.getPath() + "/listarClinicas.php", {'localidad':localidad,'especialidad':especialidad})
+        $http.post( UserSrv.getRuta() + "/climedApp/clinicasPorEspecialidadYLocalidad", {'localidad':localidad,'especialidad':especialidad})
         
         .success(function(response) {
             $scope.clinicas = response;
@@ -315,7 +333,7 @@ angular.module('app.controllers', [])
 
     $scope.elegirClinica = function(clinica){
         
-        if (especialidad == 'Clinico'){
+        if (especialidad == '40'){
             $state.go('menu.solicitarTurno',{clinica:clinica});
         }
         else if(tipo == '2'){
@@ -342,7 +360,7 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         clinica = $stateParams.clinica;
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
+        $http.get( UserSrv.getRuta() + "/climedApp/" + clinica) //GET /climed/:id
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -362,7 +380,7 @@ angular.module('app.controllers', [])
         sugerido = $scope.sugerido;
 
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/altaSolicitud.php", {'clinica':clinica,'dni':dni,'nafiliado':carnet,'sugerido':sugerido,'especialidad':1})
+        $http.post( UserSrv.getRuta() + "/solicitud/createClinico", {'IDCLIMED':clinica,'DNISOLICITANTE':dni,'IDAFILIADO':carnet,'MEDICO':sugerido,'ESPECIALIDAD':40})
         
         .success(function() {
             UserSrv.hideLoadingerror("Su solicitud se ha enviado con exito");
@@ -384,11 +402,11 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         id = $stateParams.id;
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/mostrarsolicitud.php", {'id':id})
+        $http.get( UserSrv.getRuta() + "/solicitud/solicitudApp/" + id)// get solicitud/solicitudApp/:id
         
         .success(function(response) {
             UserSrv.hideLoading();
-            $scope.solicitud = response;
+            $scope.solicitud = response[0];
         })
     }
 
@@ -396,10 +414,10 @@ angular.module('app.controllers', [])
 
     $scope.refresh = function(){
         id = $stateParams.id;
-        $http.post( UserSrv.getPath() + "/mostrarsolicitud.php", {'id':id})
+        $http.get( UserSrv.getRuta() + "/solicitud/solicitudApp/" + id)
         
         .success(function(response) {
-            $scope.solicitud = response;
+            $scope.solicitud = response[0];
         })
     }
 
@@ -414,8 +432,8 @@ angular.module('app.controllers', [])
     $scope.confirmar = function(){
         id = $stateParams.id;
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/confirmacionSolicitud.php", {'idsolicitud':id, 'accion':'confirmar','motivo':$scope.motivo})
-        
+        $http.post( UserSrv.getRuta() + "/turno/confirmar", {'IDSOLICITUD':id})
+        // post solo id solicitud/confirmar
         .success(function() {
             UserSrv.hideLoadingerror("Su solicitud se ha enviado con exito");
             $scope.motivo = "";
@@ -430,8 +448,8 @@ angular.module('app.controllers', [])
     $scope.rechazar = function(){
         id = $stateParams.id;
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/confirmacionSolicitud.php", {'idsolicitud':id, 'accion':'rechazar','motivo':$scope.motivo})
-        
+        $http.post( UserSrv.getRuta() + "/turno/rechazar", {'IDSOLICITUD':id,'motivo':$scope.motivo})
+        //POST /solicitud/rechazar
         .success(function(response) {
             UserSrv.hideLoadingerror("Se solicito el cambio de fecha, a la brevedad recibira un nuevo turno");
             $scope.motivo = "";
@@ -442,48 +460,48 @@ angular.module('app.controllers', [])
 
 })
  
-.controller('particularesCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
+// .controller('particularesCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
 
 
-    $scope.listar = function(){
-        UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Climed'})
+//     $scope.listar = function(){
+//         UserSrv.showLoading();
+//         $http.get( UserSrv.getRuta() + "/climedApp/all")
         
-        .success(function(response) {
-            UserSrv.hideLoading();
-            $scope.clinicas = response;
-            console.log(response);
-        })
-    }
+//         .success(function(response) {
+//             UserSrv.hideLoading();
+//             $scope.clinicas = response;
+//             console.log(response);
+//         })
+//     }
 
-    $scope.refresh = function(){
+//     $scope.refresh = function(){
 
-        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Climed'})
+//         $http.get( UserSrv.getRuta() + "/climedApp/all")
         
-        .success(function(response) {
-            $scope.clinicas = response;
-            console.log(response);
-        })
-    }
+//         .success(function(response) {
+//             $scope.clinicas = response;
+//             console.log(response);
+//         })
+//     }
 
-    $scope.listar();
+//     $scope.listar();
 
 
-    $scope.elegirClinica = function(clinica){
+//     $scope.elegirClinica = function(clinica){
 
-        $state.go('menu.infoClinica',{clinica:clinica});
+//         $state.go('menu.infoClinica',{clinica:clinica});
 
-    }
+//     }
 
-    $scope.doRefresh = function() {
+//     $scope.doRefresh = function() {
     
-        console.log('Refreshing!');
+//         console.log('Refreshing!');
 
-        $scope.refresh();
-        $scope.$broadcast('scroll.refreshComplete');
-    };
+//         $scope.refresh();
+//         $scope.$broadcast('scroll.refreshComplete');
+//     };
 
-})
+// })
 
 
 .controller('clinicasCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
@@ -491,7 +509,41 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Climed'})
+        $http.get(UserSrv.getRuta() + "/climedApp/all")
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.clinicas = response;
+            console.log(response);
+        })
+    }
+    $scope.refresh = function(){
+        $http.get(UserSrv.getRuta() + "/climedApp/all")
+        .success(function(response) {
+            $scope.clinicas = response;
+            console.log(response);
+        })
+    }
+
+    $scope.elegirClinica = function(clinica){
+        $state.go('menu.infoClinica',{clinica:clinica});
+    }
+
+    $scope.doRefresh = function() {
+        console.log('Refreshing!');
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
+    $scope.listar();
+
+})
+
+.controller('particularesCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
+
+
+    $scope.listar = function(){
+        UserSrv.showLoading();
+        $http.get(UserSrv.getRuta() + "/climedApp/allParticulares")
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -502,7 +554,7 @@ angular.module('app.controllers', [])
 
     $scope.refresh = function(){
 
-        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Climed'})
+        $http.get(UserSrv.getRuta() + "/climedApp/allParticulares")
         
         .success(function(response) {
             $scope.clinicas = response;
@@ -511,7 +563,6 @@ angular.module('app.controllers', [])
     }
 
     $scope.listar();
-
 
     $scope.elegirClinica = function(clinica){
 
@@ -535,7 +586,7 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Farmacias'})
+        $http.get( UserSrv.getRuta() + "/farmaciaApp/all")
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -546,7 +597,7 @@ angular.module('app.controllers', [])
 
     $scope.refresh = function(){
 
-        $http.post( UserSrv.getPath() + "/cartilla.php", {'tabla':'Farmacias'})
+        $http.get( UserSrv.getRuta() + "/farmaciaApp/all")
         
         .success(function(response) {
             $scope.farmacias = response;
@@ -571,7 +622,7 @@ angular.module('app.controllers', [])
     $scope.listar = function(){
         clinica = $stateParams.clinica;
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
+        $http.get( UserSrv.getRuta() + "/climedApp/" + clinica)
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -585,7 +636,7 @@ angular.module('app.controllers', [])
         clinica = $stateParams.clinica;
         UserSrv.showLoading();
 
-        $http.post( UserSrv.getPath() + "/listarEspecialidades.php", {'clinica':clinica})
+        $http.get( UserSrv.getRuta() + "/climedApp/especialidades/" + clinica)
         
         .success(function(response) {
                     console.log(response);
@@ -606,7 +657,7 @@ angular.module('app.controllers', [])
     $scope.enviar = function(){
 
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/altaRecomendacion.php", {'nombre':$scope.nombre,'apellido':$scope.apellido,'nro':$scope.nro})
+        $http.post( UserSrv.getRuta() + "/recomendacionApp", {'NOMBRE':$scope.nombre,'APELLIDO':$scope.apellido,'NRO':$scope.nro})
         
         .success(function() {
             UserSrv.hideLoadingerror("Su recomendacion se envio correctamente. Sera contactado a la brevedad.");
@@ -651,7 +702,7 @@ angular.module('app.controllers', [])
 
     $scope.listarEspecialidades = function(){
         UserSrv.showLoading();
-       $http.post( UserSrv.getPath() + "/listarEspecialidadoEstudio.php", {'tipo':'especialidad'})
+       $http.get( UserSrv.getRuta() + "/especialidadApp/all")
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -660,7 +711,7 @@ angular.module('app.controllers', [])
     }
 
     $scope.refresh = function(){
-        $http.post( UserSrv.getPath() + "/listarEspecialidadoEstudio.php", {'tipo':'especialidad'})
+        $http.get( UserSrv.getRuta() + "/especialidadApp/all")
         
         .success(function(response) {
             $scope.especialidades = response;
@@ -698,7 +749,7 @@ angular.module('app.controllers', [])
 
     $scope.listar = function(){
         UserSrv.showLoading();
-        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})
+        $http.post( UserSrv.getPath() + "/mostrarClinica.php", {'clinica':clinica})// get /climed/:id
         
         .success(function(response) {
             UserSrv.hideLoading();
@@ -756,6 +807,7 @@ angular.module('app.controllers', [])
             chunkedMode: false,
             mimeType: "image/jpg",
             params : {'directory':'certificados', 'fileName':filename}
+            
         };
             
        if($scope.srcImage==""){
@@ -763,12 +815,13 @@ angular.module('app.controllers', [])
             title: 'Debe tomar una foto de la orden para poder enviar la solicitud.',
             });
         }else{   
+            
             UserSrv.showLoading();
             $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
 
                 console.log("SUCCESS: " + JSON.stringify(result.response));
 
-                $http.post( UserSrv.getPath() + "/altaEspecialidadEstudio.php", {'clinica':clinica,'dni':dni,'nafiliado':carnet,'sugerido':$scope.sugerido,'especialidad':$scope.especialidad,'tipo':'2','foto':filename})
+                $http.post( UserSrv.getRuta() + "/solicitud/createEspecialidad", {'IDCLIMED':clinica,'DNISOLICITANTE':dni,'IDAFILIADO':carnet,'MEDICO':$scope.sugerido,'ESPECIALIDAD':$scope.especialidad,'FOTO':filename})
         
                 .success(function() {
 
@@ -852,13 +905,13 @@ angular.module('app.controllers', [])
             var alertPopup = $ionicPopup.alert({
             title: 'Debe tomar una foto de la orden para poder enviar la solicitud.',
             });
-        }else{   
+        }else{
             UserSrv.showLoading();
             $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
 
                 console.log("SUCCESS: " + JSON.stringify(result.response));
 
-                $http.post( UserSrv.getPath() + "/altaEstudio.php", {'dni':dni,'nafiliado':carnet,'sugerido':$scope.sugerido,'foto':filename})
+                $http.post( UserSrv.getRuta() + "/solicitud/createEstudio", {'DNISOLICITANTE':dni,'IDAFILIADO':carnet,'MEDICO':$scope.sugerido,'FOTO':filename})
         
                 .success(function() {
 
@@ -872,7 +925,6 @@ angular.module('app.controllers', [])
                     $scope.confirmacion = " Debe tomar una foto";
                     $scope.icon = "icon ion-close-round";
                     $scope.color = "button-assertive"
-
                     $state.go('menu.t_pendientes');
                 })
 

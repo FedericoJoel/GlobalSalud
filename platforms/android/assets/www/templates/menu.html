@@ -22,7 +22,7 @@
                 <ion-item id="menu-list-item2" ui-sref="menu.particulares" menu-close="">Medicos Particulares</ion-item>
                 <ion-item id="menu-list-item3" ui-sref="menu.farmacias" menu-close="">Farmacias</ion-item>
                 <ion-item class="item-divider " id="menu-list-item-divider2"><b>Turnos</b></ion-item>
-                <ion-item id="menu-list-item8" ui-sref="menu.busquedaPorPartido({especialidad:'Clinico'})" menu-close="" class="  ">Turno clinico</ion-item>
+                <ion-item id="menu-list-item8" ui-sref="menu.busquedaPorPartido({especialidad:'40'})" menu-close="" class="  ">Turno clinico</ion-item>
                 <ion-item id="menu-list-item9" ui-sref="menu.seleccionEspecialidad()" menu-close="" class="  ">Turno especialista</ion-item>
                 <ion-item id="menu-list-item10" ui-sref="menu.solicitarEstudio()" menu-close="" class="  ">Turno estudios</ion-item>
                 <ion-item class="item-divider " id="menu-list-item-divider3"><b>Mis solicitudes</b></ion-item>
@@ -32,6 +32,7 @@
                 <ion-item class="item-divider " id="menu-list-item-divider4"><b>Ayuda</b></ion-item>
                 <ion-item id="contacto" ui-sref="menu.contacto" menu-close="">Contacto</ion-item>
                 <ion-item id="contacto" href="http://www.cobertec.com.ar" menu-close="">Chatea con nosotros</ion-item>
+                <ion-item id="cerrar" ui-sref="login" onclick="localStorage.setItem('logueado', false);" menu-close="">Cerrar sesion</ion-item>
             </ion-list>
         </ion-content>
     </ion-side-menu>

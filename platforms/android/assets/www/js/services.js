@@ -1,5 +1,32 @@
 angular.module('app.services', [])
 
+.factory('APIInterceptor', function ($q, $rootScope) {
+    return {
+      // optional method
+      'request': function (config) {
+        // do something on success
+        config.headers.Authorization = 'Bearer ' + localStorage.getItem('token');
+        return config;
+      },
+
+      // optional method
+      'requestError': function (rejection) {
+        // do something on error
+        return $q.reject(rejection);
+      },
+      // optional method
+      'response': function (response) {
+        // do something on success
+        return response;
+      },
+      // optional method
+      'responseError': function (rejection) {
+        // do something on error
+          return  $q.reject(rejection);
+      }
+    }
+  })
+
 .factory('BlankFactory', [function(){
 
 }])
@@ -8,10 +35,19 @@ angular.module('app.services', [])
     var _dni;
     var _nsocio;
     var _path = "http://www.gestionarturnos.com/Fede"
+    var _ruta = "https://guarded-oasis-37936.herokuapp.com"
     var _confirmados
     var _rechazados
     var _pendientes
     // var _path = "http://localhost:8888";
+
+    this.getRuta = function(ruta){
+        return _ruta;
+    }
+
+    this.setRuta = function(ruta){
+        _ruta=ruta;
+    }
 
     this.setPendientes = function(num){
         _pendientes=num;
@@ -37,20 +73,11 @@ angular.module('app.services', [])
         return _confirmados;
     }
 
-    this.setDNI = function(dni){
-        _dni=dni;
-    }
-
     this.getDNI = function(){
-        return _dni;
+        return localStorage.getItem('dni');
     }
-
-    this.setNsocio = function(nsocio){
-        _nsocio=nsocio;
-    }
-
     this.getNsocio = function(){
-        return _nsocio;
+        return localStorage.getItem('nafiliado');
     }
 
     this.getPath = function(){

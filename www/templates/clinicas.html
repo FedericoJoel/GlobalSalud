@@ -16,7 +16,7 @@
             </label>
 
             <!-- LISTA -->
-            <ion-item class="item-avatar item-icon-right royal" ng-click="elegirClinica(clinica.IDCLI)" ng-repeat="clinica in clinicas|filter:{NOMBRE:buscador,PARTICULAR:0}">
+            <ion-item class="item-avatar item-icon-right royal" ng-click="elegirClinica(clinica.IDCLI)" ng-repeat="clinica in clinicas|filter:buscador">
             <!-- clinica in clinicas|filter:{NOMBRE:buscador,PARTICULAR:0} -->
                 <img src="img/Clinica.jpg">
                 <h2royal><b>{{clinica.NOMBRE}}</b></h2royal>

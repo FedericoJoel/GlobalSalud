@@ -13,12 +13,23 @@ angular.module('app', ['ionic','ngCordova', 'app.controllers', 'app.routes', 'ap
   }, 1000);
 
   $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
+
+    var notificationOpenedCallback = function(jsonData) {
+      alert("Notification opened:\n" + JSON.stringify(jsonData));
+      console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+    };
+
+    // // TODO: Update with your OneSignal AppId before running.
+    // window.plugins.OneSignal
+    //   .startInit("87df9918-c6d2-4081-8d97-e640811d37cd")
+    //   .handleNotificationOpened(notificationOpenedCallback)
+    //   .endInit();
+    // // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // // for form inputs)
+    // if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+    //   cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    //   cordova.plugins.Keyboard.disableScroll(true);
+    // }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();

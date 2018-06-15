@@ -35,7 +35,7 @@ angular.module('app.services', [])
     var _dni;
     var _nsocio;
     var _path = "http://www.gestionarturnos.com/Fede"
-    var _ruta = "http://des.gestionarturnos.com"
+    var _ruta = "https://guarded-oasis-37936.herokuapp.com"
     var _confirmados
     var _rechazados
     var _pendientes

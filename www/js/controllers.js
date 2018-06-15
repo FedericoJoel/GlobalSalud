@@ -460,48 +460,48 @@ angular.module('app.controllers', [])
 
 })
  
-.controller('particularesCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
+// .controller('particularesCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
 
 
-    $scope.listar = function(){
-        UserSrv.showLoading();
-        $http.get( UserSrv.getRuta() + "/climedApp/all")
+//     $scope.listar = function(){
+//         UserSrv.showLoading();
+//         $http.get( UserSrv.getRuta() + "/climedApp/all")
         
-        .success(function(response) {
-            UserSrv.hideLoading();
-            $scope.clinicas = response;
-            console.log(response);
-        })
-    }
+//         .success(function(response) {
+//             UserSrv.hideLoading();
+//             $scope.clinicas = response;
+//             console.log(response);
+//         })
+//     }
 
-    $scope.refresh = function(){
+//     $scope.refresh = function(){
 
-        $http.get( UserSrv.getRuta() + "/climedApp/all")
+//         $http.get( UserSrv.getRuta() + "/climedApp/all")
         
-        .success(function(response) {
-            $scope.clinicas = response;
-            console.log(response);
-        })
-    }
+//         .success(function(response) {
+//             $scope.clinicas = response;
+//             console.log(response);
+//         })
+//     }
 
-    $scope.listar();
+//     $scope.listar();
 
 
-    $scope.elegirClinica = function(clinica){
+//     $scope.elegirClinica = function(clinica){
 
-        $state.go('menu.infoClinica',{clinica:clinica});
+//         $state.go('menu.infoClinica',{clinica:clinica});
 
-    }
+//     }
 
-    $scope.doRefresh = function() {
+//     $scope.doRefresh = function() {
     
-        console.log('Refreshing!');
+//         console.log('Refreshing!');
 
-        $scope.refresh();
-        $scope.$broadcast('scroll.refreshComplete');
-    };
+//         $scope.refresh();
+//         $scope.$broadcast('scroll.refreshComplete');
+//     };
 
-})
+// })
 
 
 .controller('clinicasCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
@@ -517,10 +517,44 @@ angular.module('app.controllers', [])
             console.log(response);
         })
     }
+    $scope.refresh = function(){
+        $http.get(UserSrv.getRuta() + "/climedApp/all")
+        .success(function(response) {
+            $scope.clinicas = response;
+            console.log(response);
+        })
+    }
+
+    $scope.elegirClinica = function(clinica){
+        $state.go('menu.infoClinica',{clinica:clinica});
+    }
+
+    $scope.doRefresh = function() {
+        console.log('Refreshing!');
+        $scope.refresh();
+        $scope.$broadcast('scroll.refreshComplete');
+    };
+    $scope.listar();
+
+})
+
+.controller('particularesCtrl', function($scope,UserSrv,$stateParams,$state,$http,$ionicPopup,$ionicHistory) {
+
+
+    $scope.listar = function(){
+        UserSrv.showLoading();
+        $http.get(UserSrv.getRuta() + "/climedApp/allParticulares")
+        
+        .success(function(response) {
+            UserSrv.hideLoading();
+            $scope.clinicas = response;
+            console.log(response);
+        })
+    }
 
     $scope.refresh = function(){
 
-        $http.get(UserSrv.getRuta() + "/climedApp/all")
+        $http.get(UserSrv.getRuta() + "/climedApp/allParticulares")
         
         .success(function(response) {
             $scope.clinicas = response;
@@ -529,7 +563,6 @@ angular.module('app.controllers', [])
     }
 
     $scope.listar();
-
 
     $scope.elegirClinica = function(clinica){
 
