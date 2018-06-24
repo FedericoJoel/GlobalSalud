@@ -92,12 +92,10 @@ angular.module('app.controllers', [])
             }
             
             console.log($scope.solicitudesEspera);
-            UserSrv.hideLoading();
         })
 
 
         // PENDIENTES Y ABIERTOS
-        UserSrv.showLoading();
         $http.get( UserSrv.getRuta() + "/solicitud/pendientesyabiertas/" + dni)
         
         .success(function(response) {
@@ -390,8 +388,9 @@ angular.module('app.controllers', [])
                 disableBack: true
             });
             $state.go('menu.t_pendientes');
-
-
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Hubo un error al procesar la solicitud.");
         })
     }
 
