@@ -93,6 +93,9 @@ angular.module('app.controllers', [])
             
             console.log($scope.solicitudesEspera);
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error.");
+        })
 
 
         // PENDIENTES Y ABIERTOS
@@ -107,6 +110,9 @@ angular.module('app.controllers', [])
             }
             console.log(response);
             UserSrv.hideLoading();
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error.");
         })
 
     }
@@ -133,6 +139,9 @@ angular.module('app.controllers', [])
             }
             console.log(response);
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
+        })
 
 
         // PENDIENTES Y ABIERTOS
@@ -146,6 +155,9 @@ angular.module('app.controllers', [])
                 $scope.solicitudesPendiente = response;
             }
             console.log(response);
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
 
         /*$http({   
@@ -188,6 +200,9 @@ angular.module('app.controllers', [])
             $scope.solicitudes = response;
             console.log($scope.solicitudes);
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
+        })
     }
 
     $scope.refresh = function(){
@@ -199,6 +214,9 @@ angular.module('app.controllers', [])
             UserSrv.hideLoading();
             $scope.solicitudes = response;
             console.log($scope.solicitudes);
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
     }
 
@@ -225,6 +243,9 @@ angular.module('app.controllers', [])
             $scope.solicitudes = response;
             console.log($scope.solicitudes);
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
+        })
     }
 
     $scope.refresh = function(){
@@ -234,6 +255,9 @@ angular.module('app.controllers', [])
         .success(function(response) {
             $scope.solicitudes = response;
             console.log($scope.solicitudes);
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
     }
 
@@ -266,6 +290,9 @@ angular.module('app.controllers', [])
             UserSrv.hideLoading();
             $scope.localidades = response;
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
+        })
     }
 
     $scope.refresh = function(){
@@ -273,6 +300,9 @@ angular.module('app.controllers', [])
         
         .success(function(response) {
             $scope.localidades = response;
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
     }
 
@@ -312,6 +342,9 @@ angular.module('app.controllers', [])
             $scope.clinicas = response;
             console.log(response);
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
+        })
     }
 
     $scope.refresh = function(){
@@ -323,6 +356,9 @@ angular.module('app.controllers', [])
         .success(function(response) {
             $scope.clinicas = response;
             console.log(response);
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
     }
 
@@ -363,6 +399,9 @@ angular.module('app.controllers', [])
         .success(function(response) {
             UserSrv.hideLoading();
             $scope.clinica = response;
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
     }
 
@@ -407,6 +446,9 @@ angular.module('app.controllers', [])
             UserSrv.hideLoading();
             $scope.solicitud = response[0];
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
+        })
     }
 
     $scope.listar();
@@ -417,6 +459,9 @@ angular.module('app.controllers', [])
         
         .success(function(response) {
             $scope.solicitud = response[0];
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
     }
 
@@ -442,6 +487,9 @@ angular.module('app.controllers', [])
             $state.go('menu.t_pendientes');
 
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Hubo un error al confirmar la solicitud.");
+        })
     }
 
     $scope.rechazar = function(){
@@ -454,6 +502,9 @@ angular.module('app.controllers', [])
             $scope.motivo = "";
             $scope.solicitud = response;
             $state.go('menu.t_pendientes');
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Hubo un error al rechazar la solicitud.");
         })
     }
 
@@ -515,12 +566,18 @@ angular.module('app.controllers', [])
             $scope.clinicas = response;
             console.log(response);
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
+        })
     }
     $scope.refresh = function(){
         $http.get(UserSrv.getRuta() + "/climedApp/all")
         .success(function(response) {
             $scope.clinicas = response;
             console.log(response);
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
     }
 
@@ -549,6 +606,9 @@ angular.module('app.controllers', [])
             $scope.clinicas = response;
             console.log(response);
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
+        })
     }
 
     $scope.refresh = function(){
@@ -558,6 +618,9 @@ angular.module('app.controllers', [])
         .success(function(response) {
             $scope.clinicas = response;
             console.log(response);
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
     }
 
@@ -592,6 +655,9 @@ angular.module('app.controllers', [])
             $scope.farmacias = response;
             console.log(response);
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
+        })
     }
 
     $scope.refresh = function(){
@@ -601,6 +667,9 @@ angular.module('app.controllers', [])
         .success(function(response) {
             $scope.farmacias = response;
             console.log(response);
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
     }
 
@@ -627,6 +696,9 @@ angular.module('app.controllers', [])
             UserSrv.hideLoading();
             $scope.clinica = response;
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
+        })
 
     }
 
@@ -641,6 +713,9 @@ angular.module('app.controllers', [])
                     console.log(response);
             UserSrv.hideLoading();
             $scope.especialidades = response;
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
 
     }
@@ -665,6 +740,9 @@ angular.module('app.controllers', [])
                 disableBack: true
             });
             $state.go('menu.t_pendientes');
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Hubo un error al enviar la recomendación.");
         })
     }
 
@@ -691,7 +769,9 @@ angular.module('app.controllers', [])
             });
             $state.go('menu.t_pendientes');
 
-
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Hubo un error al enviar la recomendación.");
         })
     }
 
@@ -707,6 +787,9 @@ angular.module('app.controllers', [])
             UserSrv.hideLoading();
             $scope.especialidades = response;
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
+        })
     }
 
     $scope.refresh = function(){
@@ -714,6 +797,9 @@ angular.module('app.controllers', [])
         
         .success(function(response) {
             $scope.especialidades = response;
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
     }
 
@@ -756,6 +842,9 @@ angular.module('app.controllers', [])
             $scope.confirmacion = " Debe tomar una foto";
             $scope.icon = "icon ion-close-round";
             $scope.color = "button-assertive"
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
     }
 
@@ -836,6 +925,9 @@ angular.module('app.controllers', [])
                     $scope.color = "button-assertive"
 
                     $state.go('menu.t_pendientes');
+                })
+                .error(function() {
+                    UserSrv.hideLoadingerror("Hubo un error al procesar la solicitud.");
                 })
 
             }, function (err) {
@@ -926,6 +1018,9 @@ angular.module('app.controllers', [])
                     $scope.color = "button-assertive"
                     $state.go('menu.t_pendientes');
                 })
+                .error(function() {
+                    UserSrv.hideLoadingerror("Hubo un error al procesar la solicitud.");
+                })
 
             }, function (err) {
 
@@ -976,6 +1071,9 @@ angular.module('app.controllers', [])
             UserSrv.hideLoading();
             $scope.estudios = response;
         })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
+        })
     }
 
     $scope.refresh = function(){
@@ -983,6 +1081,9 @@ angular.module('app.controllers', [])
         
         .success(function(response) {
             $scope.estudios = response;
+        })
+        .error(function() {
+            UserSrv.hideLoadingerror("Ha ocurrido un error. Intente nuevamente.");
         })
     }
 

@@ -86,7 +86,7 @@ angular.module('app.services', [])
 
     this.showLoading = function(){
         $ionicLoading.show({
-            template: '<div class="icon ion-loading-a"></div> Loading... ',
+            template: '<div class="icon ion-loading-a"></div> Cargando... ',
             animation: 'fade-in',
             showBackdrop: true,
             maxWidth: 500,
